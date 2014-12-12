@@ -21,10 +21,11 @@ class Protocal_model extends CI_Model{
         }
         return 1;//$this->get_id($user_id);
 	}	
-	/*function get_list_by_id($user_id)
+	function get_list_by_modality_bodypart($modality,$bodypart_full)
 	{
-		$sql = 'SELECT * FROM upload WHERE user_id=? order by dining_time desc';
-        $query = $this->db->query($sql, $user_id);
+		$sql = 'SELECT * FROM protocal WHERE modality=? and bodypart_full=?';
+		$params = array($modality,$bodypart_full);
+        $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
 			$result=$query->result_array();
 			return $result;            
@@ -33,7 +34,7 @@ class Protocal_model extends CI_Model{
             return null;
         }
 	}
-	function get_thumb_by_upload_id($upload_id)
+	/*function get_thumb_by_upload_id($upload_id)
 	{
 		$sql = 'SELECT thumbimg_dir FROM upload WHERE upload_id=?';
         $query = $this->db->query($sql, $upload_id);

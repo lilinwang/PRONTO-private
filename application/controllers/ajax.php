@@ -37,13 +37,12 @@ class Ajax extends CI_Controller {
 		$result= $this->protocal_model->insert_new($protocal_name,$code,$description,$modality,$bodypart,$bodypart_full,$approval_date,$golive_date,$approved_by,$series,$scan_position,$notes);			
 		echo json_encode($result);			
 	}
-	function get_list(){	
-		$user_id=$_POST['user_id'];
-		//echo $user_id;
+	function get_protocal(){	
+		$modality=$this->input->post('modality');
+		$bodypart_full=$this->input->post('bodypart_full');
 		$this->load->model('protocal_model');				
-		$result= $this->protocal_model->get_list_by_id($user_id);			
-		echo json_encode($result);		
-		
+		$result= $this->protocal_model->get_list_by_modality_bodypart($modality,$bodypart_full);			
+		echo json_encode($result);				
 	}
 	
     function get_profile()

@@ -39,79 +39,7 @@
     <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="js/sb-admin-2.js"></script>
-		
-	<script type="text/javascript">
-    $(function() {
-// login & sign-up tab
-        $("#get-list").click(function(){
-			$.post("ajax/get_list", 
-			{		
-				user_id:<?php echo $this->session->userdata('user_id');?>
-            },
-			function(data,status){				
-				data = eval("(" + data + ")");				
-				//console.log(data);
-				var innerHTML="<ul>";
-				for (var i=0;i<data.length;i++){
-					innerHTML+="<div class=\"thumbnail\">";
-					innerHTML+="<img src=\""+data[i].thumbimg_dir+"\">";
-					innerHTML+="<div class=\"caption\"><h4>"+data[i].description+"</h4></div>"
-					innerHTML+="<p>"+data[i].dining_time;
-					if (data[i].restaurant_name!="") innerHTML+=" @ "+data[i].restaurant_name;
-					innerHTML+="</p></div>	<hr />";
-				}
-				innerHTML+="</ul>";
-				document.getElementById("list").innerHTML = innerHTML;	
-				//data.metadata.image_path_prefix+data.data.relationships.primary_image.items[0].path
-				//var innerHTML="<a class=\"pull-left\" href=\"#\"> <img src=\""+data.metadata.image_path_prefix+data.data.relationships.primary_image.items[0].path+"\" class=\"media-object\" onclick=\"get_metrics(this)\" width=100px> </a>";			
-				//innerHTML+="<h4 class=\"media-heading\">"+document.getElementById("company_name").value+"</h4>";
-				//document.getElementById("focus").innerHTML += innerHTML;		   
-			});
-			$("#home").show();
-			$("#add-protocal").hide();
-			$("#import").hide();
-			$("#search").hide();
-			$("#api").hide();
-		});		
-		$("#get-home").click(function(){
-            $("#home").show();
-			$("#add-protocal").hide();
-			$("#import").hide();
-			$("#search").hide();
-			$("#api").hide();
-        });
-        $("#get-add-protocal").click(function(){
-            $("#home").show();
-			$("#add-protocal").hide();
-			$("#import").hide();
-			$("#search").hide();
-			$("#api").hide();
-        });
-		$("#get-import").click(function(){
-            $("#home").show();
-			$("#add-protocal").hide();
-			$("#import").hide();
-			$("#search").hide();
-			$("#api").hide();
-        });
-		$("#get-search").click(function(){
-            $("#home").show();
-			$("#add-protocal").hide();
-			$("#import").hide();
-			$("#search").hide();
-			$("#api").hide();
-        });
-		$("#get-api").click(function(){
-            $("#home").show();
-			$("#add-protocal").hide();
-			$("#import").hide();
-			$("#search").hide();
-			$("#api").hide();
-        });
-		$("#get-home").trigger("click");
-	});
-	</script>
+    <script src="js/sb-admin-2.js"></script>	
 </head>
 
 <body ng-controller="PanelController as panel">
@@ -187,29 +115,27 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+								<li> <a href ng-click="panel.selectProtocals('CT','head')">head</a></li>						                               
                                 <li>
-                                    <a href="#">head</a>
+                                    <a href ng-click="panel.selectProtocals('CT','neck')">neck</a>
                                 </li>
                                 <li>
-                                    <a href="#">neck</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Cervical Spine')">Cervical Spine</a>
                                 </li>
                                 <li>
-                                    <a href="notifications.html"> Cervical Spine</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Thoracic Spine')">Thoracic Spine</a>
                                 </li>
                                 <li>
-                                    <a href="#">Thoracic Spine</a>
-                                </li>
-                                <li>
-                                    <a href="#">Lumbar Spine</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Lumbar Spine')">Lumbar Spine</a>
                                 </li>
 								<li>
-                                    <a href="#">Lumbar Spinal Cord</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Lumbar Spinal Cord')">Lumbar Spinal Cord</a>
                                 </li>
 								<li>
-                                    <a href="#">Brachial Plexus</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Brachial Plexus')">Brachial Plexus</a>
                                 </li>
 								<li>
-                                    <a href="#">Facial Bones</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Facial Bones')">Facial Bones</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -218,31 +144,31 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Musculoskeletal CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Ankle</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Ankle')">Ankle</a>
                                 </li>
                                 <li>
-                                    <a href="#">Foot</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Foot')">Foot</a>
                                 </li>
                                 <li>
-                                    <a href="notifications.html">Shoulder</a>
+                                    <a href ng-click="panel.selectProtocals('CT','neShoulderck')">Shoulder</a>
                                 </li>
                                 <li>
-                                    <a href="#">Wrist</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Wrist')">Wrist</a>
                                 </li>
                                 <li>
-                                    <a href="#">Hand</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Hand')">Hand</a>
                                 </li>
 								<li>
-                                    <a href="#">Pelvis</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Pelvis')">Pelvis</a>
                                 </li>
 								<li>
-                                    <a href="#">Hip</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Hip')">Hip</a>
                                 </li>
 								<li>
-                                    <a href="#">Knee</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Knee')">Knee</a>
                                 </li>
 								<li>
-                                    <a href="#">Variable</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Variable')">Variable</a>
                                 </li>								
                             </ul>
                             <!-- /.nav-second-level -->
@@ -251,10 +177,10 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Body CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Abdomen/Pelvis</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Abdomen/Pelvis')">Abdomen/Pelvis</a>
                                 </li>
                                 <li>
-                                    <a href="#">Others</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Others')">Others</a>
                                 </li>                                	
                             </ul>
                             <!-- /.nav-second-level -->
@@ -263,56 +189,44 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Cardiac CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Heart</a>
+                                    <a href ng-click="panel.selectProtocals('CT','Heart')">Heart</a>
                                 </li>                                                          
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
 						<li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
+                            <a href href ng-click="panel.selectProtocals('MR','')"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
                         </li>
-						<li>
+						<li class="active">
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro MR<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Head</a>
+                                    <a class="active" href ng-click="panel.selectProtocals('MR','Head')">Head</a>
                                 </li>                                                          
 								<li>
-                                    <a href="#">Neck</a>
+                                    <a href ng-click="panel.selectProtocals('MR','neck')">Neck</a>
                                 </li> 
 								<li>
-                                    <a href="notifications.html"> Cervical Spine</a>
+                                    <a href ng-click="panel.selectProtocals('MR','Cervical Spine')"> Cervical Spine</a>
                                 </li>
                                 <li>
-                                    <a href="#">Thoracic Spine</a>
+                                    <a href ng-click="panel.selectProtocals('MR','Thoracic Spine')">Thoracic Spine</a>
                                 </li>
                                 <li>
-                                    <a href="#">Lumbar Spine</a>
+                                    <a href ng-click="panel.selectProtocals('MR','Lumbar Spine')">Lumbar Spine</a>
                                 </li>
 								<li>
-                                    <a href="#">CTL Spine</a>
+                                    <a href ng-click="panel.selectProtocals('MR','CTL Spine')">CTL Spine</a>
                                 </li> 
 								<li>
-                                    <a href="#">Variable</a>
+                                    <a href ng-click="panel.selectProtocals('MR','Variable')">Variable</a>
                                 </li> 
 								<li>
-                                    <a href="#">others</a>
+                                    <a href ng-click="panel.selectProtocals('MR','others')">others</a>
                                 </li> 
                             </ul>
                             <!-- /.nav-second-level -->
-                        </li>
-                        <li class="active">
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a class="active" href="blank.html">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="login.html">Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -451,20 +365,8 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-				<h1>{{product.name}}</h1>
-				<h2>{{product.price|currency}}</h2>
-				<button ng-show="product.canPurchase">Purchase</button>
-				<blockquote ng-repeat="review in product.reviews">
-				<b>Stars: {{review.stars}}</b>
-				{{review.body}}
-				<cite>by: {{review.author}}</cite>
-				</blockquote>
  
-		<!-- 	<div class="row" ng-controller="StoreController as store">
-				<product-panels>
-				</product-panels>			
-			</div>
-			-->
+		
 			</div>
         <!-- /#page-wrapper -->
 			<div ng-show="panel.isSelected(6)">				 
@@ -473,13 +375,65 @@
                     <h1 class="page-header">Protocal</h1>
                 </div>
                 <!-- /.col-lg-12 -->
-            </div>            
+            </div>       
             <!-- /.row -->
-			<div class="row">
+            <div class="row">
                 <div class="col-lg-12">
-				Welcome to the radiology.com web site. This is the world’s first site that can convert MR & CT scanning sequence parameters in machine language directly into an easily readable format, and allow you to download a file to import directly into your own scanner without the time consuming practice of entering every sequence manually. Please visit our about page for more information. We are currently adding new protocols to this site in every category.
-				</div>
-			</div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            DataTables Advanced Tables
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Protocal Name</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>Modality</th>
+                                            <th>General Body Part</th>
+											<th>Body Part Code</th>
+                                            <th>Detailed Body Part</th>
+                                            <th>Approval_date</th>
+                                            <th>Golive date</th>
+                                            <th>Approved by</th>
+											<th>Series</th>
+                                            <th>Scan position</th>
+											<th>Note</th>                                            
+										</tr>
+                                    </thead>
+                                    <tbody>
+										<div ng-repeat="protocal in pdata.protocals">
+                                        <tr class="odd gradeX">
+                                            <td>{{protocal.protocal_name}}</td>
+                                            <td>{{protocal.code}}</td>
+                                            <td>{{protocal.description}}</td>
+											<td>{{protocal.modality}}</td>
+                                            <td class="center">{{protocal.bodypart}}</td>
+                                            <td class="center">{{protocal.bodypart_code}}</td>
+											<td>{{protocal.bodypart_full}}</td>
+                                            <td>{{protocal.approval_date}}</td>
+                                            <td>{{protocal.golive_date}}</td>
+											<td>{{protocal.approved_by}}</td>
+                                            <td>{{protocal.series}}</td>
+                                            <td>{{protocal.scan_position}}</td>
+											<td>{{protocal.notes}}</td>                                            
+                                        </tr>
+										</div>                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
 			</div>
     </div>
     <!-- /#wrapper -->
