@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="store">
 
 <head>
 
@@ -21,7 +21,7 @@
     <link href="css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,6 +40,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/sb-admin-2.js"></script>
+		
 	<script type="text/javascript">
     $(function() {
 // login & sign-up tab
@@ -113,9 +114,9 @@
 	</script>
 </head>
 
-<body>
-
-    <div id="wrapper">
+<body ng-controller="PanelController as panel">
+	
+    <div id="wrapper" ng-controller="">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -129,8 +130,14 @@
                 <a class="navbar-brand" href="index.html">Radiology</a>
             </div>
             <!-- /.navbar-header -->
-			<ul class="nav navbar-top-links navbar-left">   
-												
+			<ul class="nav navbar-top-links navbar-left">
+						<li ng-class="{ active: panel.isSelected(1)}"> <a href ng-click="panel.select(1)">Home</a> </li>
+						<li ng-class="{ active: panel.isSelected(2)}"> <a href ng-click="panel.select(2)">Add Protocal</a> </li>
+						<li ng-class="{ active: panel.isSelected(3)}"> <a href ng-click="panel.select(3)">Import</a> </li>
+						<li ng-class="{ active: panel.isSelected(4)}"> <a href ng-click="panel.select(4)">Advanced Search</a> </li>
+						<li ng-class="{ active: panel.isSelected(5)}"> <a href ng-click="panel.select(5)">API</a> </li>
+			</ul>
+			<!--<ul class="nav navbar-top-links navbar-left">   												
 							<li><a id="get-home" href="#">Home</a></li>
 							<li><a id="get-add-protocal" href="#">Add Protocal</a></li>
 							<li><a id="get-import" href="#">Import</a></li>							
@@ -138,7 +145,7 @@
 							<li><a id="get-api" href="#">API</a></li>							
 						
 			</ul>
-			
+			-->
             <ul class="nav navbar-top-links navbar-right">      
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -176,75 +183,121 @@
                             </div>
                             <!-- /input-group -->
                         </li>
+                        
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Flot Charts</a>
+                                    <a href="#">head</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">Morris.js Charts</a>
+                                    <a href="#">neck</a>
+                                </li>
+                                <li>
+                                    <a href="notifications.html"> Cervical Spine</a>
+                                </li>
+                                <li>
+                                    <a href="#">Thoracic Spine</a>
+                                </li>
+                                <li>
+                                    <a href="#">Lumbar Spine</a>
+                                </li>
+								<li>
+                                    <a href="#">Lumbar Spinal Cord</a>
+                                </li>
+								<li>
+                                    <a href="#">Brachial Plexus</a>
+                                </li>
+								<li>
+                                    <a href="#">Facial Bones</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-                        <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Musculoskeletal CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
+                                    <a href="#">Ankle</a>
                                 </li>
                                 <li>
-                                    <a href="buttons.html">Buttons</a>
+                                    <a href="#">Foot</a>
                                 </li>
                                 <li>
-                                    <a href="notifications.html">Notifications</a>
+                                    <a href="notifications.html">Shoulder</a>
                                 </li>
                                 <li>
-                                    <a href="typography.html">Typography</a>
+                                    <a href="#">Wrist</a>
                                 </li>
                                 <li>
-                                    <a href="grid.html">Grid</a>
+                                    <a href="#">Hand</a>
                                 </li>
+								<li>
+                                    <a href="#">Pelvis</a>
+                                </li>
+								<li>
+                                    <a href="#">Hip</a>
+                                </li>
+								<li>
+                                    <a href="#">Knee</a>
+                                </li>
+								<li>
+                                    <a href="#">Variable</a>
+                                </li>								
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+						<li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Body CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Second Level Item</a>
+                                    <a href="#">Abdomen/Pelvis</a>
                                 </li>
                                 <li>
-                                    <a href="#">Second Level Item</a>
+                                    <a href="#">Others</a>
+                                </li>                                	
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+						<li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Cardiac CT<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Heart</a>
+                                </li>                                                          
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+						<li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
+                        </li>
+						<li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro MR<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Head</a>
+                                </li>                                                          
+								<li>
+                                    <a href="#">Neck</a>
+                                </li> 
+								<li>
+                                    <a href="notifications.html"> Cervical Spine</a>
                                 </li>
                                 <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
+                                    <a href="#">Thoracic Spine</a>
                                 </li>
+                                <li>
+                                    <a href="#">Lumbar Spine</a>
+                                </li>
+								<li>
+                                    <a href="#">CTL Spine</a>
+                                </li> 
+								<li>
+                                    <a href="#">Variable</a>
+                                </li> 
+								<li>
+                                    <a href="#">others</a>
+                                </li> 
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -269,6 +322,7 @@
 
         <!-- Page Content -->
         <div id="page-wrapper" name="home">
+			<div ng-show="panel.isSelected(1)">				 
 			<div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Home</h1>
@@ -281,13 +335,158 @@
 				Welcome to the radiology.com web site. This is the world’s first site that can convert MR & CT scanning sequence parameters in machine language directly into an easily readable format, and allow you to download a file to import directly into your own scanner without the time consuming practice of entering every sequence manually. Please visit our about page for more information. We are currently adding new protocols to this site in every category.
 				</div>
 			</div>
-        </div>
+			</div>
+			
+			<div ng-show="panel.isSelected(2)">
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Add a protocal</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div> 
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Protocal
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form" name="protocalForm" ng-controller="ProtocalController as protocalCtrl" ng-submit="addProtocal()" novalidate>
+                                        <div class="form-group">
+                                            <label>Protocal Name</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.protocal_name" required>
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div>                                                                              
+                                        <div class="form-group">
+                                            <label>Code</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.code">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control" rows="3" ng-model="cred.description"></textarea>
+                                        </div>
+                                                                                
+                                        <div class="form-group">
+                                            <label>Modality</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="CT" checked ng-model="cred.modality">CT
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="MR" ng-model="cred.modality">MR
+                                            </label>                                            
+                                        </div>
+										<div class="form-group">
+                                            <label>General Body Part</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.bodypart">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label>Select Detailed Body Part</label>
+                                            <select class="form-control" ng-model="cred.bodypart_full">
+												<option>Abdomen/Pelvis</option>
+												<option>Ankle</option>
+                                                <option>Brachial Plexus</option>											
+                                                <option>Cervical Spine</option>
+												<option>CTL Spine</option>
+												<option>Facial Bones</option>                                                
+												<option>Foot</option>												
+                                                <option>Hand</option>																							
+                                                <option>Head</option>
+												<option>Heart</option>												
+                                                <option>Hip</option>
+												<option>Neck</option>                                               
+                                                <option>Knee</option>
+												<option>Lumbar Spine</option>
+												<option>Lumbar Spinal Cord</option>                                                
+												<option>Others</option>
+												<option>Pelvis</option>   
+												<option>Shoulder</option>
+												<option>Thoracic Spine</option>
+												<option>Variable</option>
+												<option>Wrist</option>                                               												
+                                            </select>
+                                        </div>  
+										<div class="form-group">
+                                            <label>Approval Date</label>
+                                            <input type="date" class="form-control" placeholder="YYYY-MM-DD" ng-model="cred.approval_date">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 										
+										<div class="form-group">
+                                            <label>Go live Date</label>
+                                            <input type="date" class="form-control" placeholder="YYYY-MM-DD" ng-model="cred.golive_date">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+										<div class="form-group">
+                                            <label>Approved By (Person)</label>
+                                            <input class="form-control" placeholder="Full Name" ng-model="cred.approved_by">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+										<div class="form-group">
+                                            <label>Series</label>
+                                            <textarea class="form-control" rows="3" ng-model="cred.series"></textarea>
+                                        </div>
+										<div class="form-group">
+                                            <label>Scan Position</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.scan_position">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div>
+										<div class="form-group">
+                                            <label>Notes</label>
+                                            <textarea class="form-control" rows="3" ng-model="cred.notes"></textarea>
+                                        </div>										
+                                        <button type="submit" class="btn btn-default" ng-disabled="!protocalForm.$valid">Submit Button</button>
+                                        <button type="reset" class="btn btn-default">Reset Button</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+				<h1>{{product.name}}</h1>
+				<h2>{{product.price|currency}}</h2>
+				<button ng-show="product.canPurchase">Purchase</button>
+				<blockquote ng-repeat="review in product.reviews">
+				<b>Stars: {{review.stars}}</b>
+				{{review.body}}
+				<cite>by: {{review.author}}</cite>
+				</blockquote>
+ 
+		<!-- 	<div class="row" ng-controller="StoreController as store">
+				<product-panels>
+				</product-panels>			
+			</div>
+			-->
+			</div>
         <!-- /#page-wrapper -->
-		
+			<div ng-show="panel.isSelected(6)">				 
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Protocal</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>            
+            <!-- /.row -->
+			<div class="row">
+                <div class="col-lg-12">
+				Welcome to the radiology.com web site. This is the world’s first site that can convert MR & CT scanning sequence parameters in machine language directly into an easily readable format, and allow you to download a file to import directly into your own scanner without the time consuming practice of entering every sequence manually. Please visit our about page for more information. We are currently adding new protocols to this site in every category.
+				</div>
+			</div>
+			</div>
     </div>
     <!-- /#wrapper -->
 
-
+	<script type="text/javascript" src="js/angular.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	
 </body>
 
 </html>
