@@ -1,30 +1,32 @@
 <?php
-class Protocal_model extends CI_Model{
+class protocol_ct_model extends CI_Model{
 	
 	function __construct(){
 		parent::__construct();
 	}
 	function insert_new(
-		$protocal_name,$code,$description,$modality,$bodypart,$bodypart_full,$approval_date,
-		$golive_date,$approved_by,$series,$scan_position,$notes
+		$protocol_number,$protocol_name,$code,$description,$bodypart,$bodypart_full,
+		$approval_date,$golive_date,$approved_by,$series,$notes,
+		$indication,$patient_orientation,$landmark,$intravenous_contrast,$scout
 	){
-		 $sql='INSERT INTO 
-            (protocal_name,code,description,modality,bodypart,bodypart_full,approval_date,golive_date,approved_by,series,scan_position,notes) 
-            values (?,?,?,?,?,?,?,?,?,?,?,?)';
+		 $sql='INSERT INTO protocol_ct
+            (protocol_number,protocol_name,code,description,bodypart,bodypart_full,approval_date,golive_date,approved_by,series,notes,indication,patient_orientation,landmark,intravenous_contrast,scout) 
+            values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 		
         $params = array(
-            $protocal_name,$code,$description,$modality,$bodypart,$bodypart_full,$approval_date,$golive_date,$approved_by,$series,$scan_position,$notes
-        );
+            $protocol_number,$protocol_name,$code,$description,$bodypart,$bodypart_full,$approval_date,$golive_date,$approved_by,$series,$notes,$indication,$patient_orientation,$landmark,$intravenous_contrast,$scout
+		);
         if (!$this->db->query($sql, $params)) {
             echo $this->db->_error_message();
             return 0;
-        }
-        return 1;//$this->get_id($user_id);
+        }else{
+			return 1;//$this->get_id($user_id);
+		}
 	}	
-	function get_list_by_modality_bodypart($modality,$bodypart_full)
+	function get_list_by_bodypart($bodypart_full)
 	{
-		$sql = 'SELECT * FROM protocal WHERE modality=? and bodypart_full=?';
-		$params = array($modality,$bodypart_full);
+		$sql = 'SELECT * FROM protocol_ct WHERE bodypart_full LIKE ?';
+		$params = array($bodypart_full);
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
 			$result=$query->result_array();

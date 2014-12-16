@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" ng-app="store">
 
@@ -40,11 +42,13 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/sb-admin-2.js"></script>	
+	<script type="text/javascript" src="js/angular.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
 </head>
 
 <body ng-controller="PanelController as panel">
 	
-    <div id="wrapper" ng-controller="">
+    <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -60,14 +64,14 @@
             <!-- /.navbar-header -->
 			<ul class="nav navbar-top-links navbar-left">
 						<li ng-class="{ active: panel.isSelected(1)}"> <a href ng-click="panel.select(1)">Home</a> </li>
-						<li ng-class="{ active: panel.isSelected(2)}"> <a href ng-click="panel.select(2)">Add Protocal</a> </li>
+						<li ng-class="{ active: panel.isSelected(2)}"> <a href ng-click="panel.select(2)">Add protocol</a> </li>
 						<li ng-class="{ active: panel.isSelected(3)}"> <a href ng-click="panel.select(3)">Import</a> </li>
 						<li ng-class="{ active: panel.isSelected(4)}"> <a href ng-click="panel.select(4)">Advanced Search</a> </li>
 						<li ng-class="{ active: panel.isSelected(5)}"> <a href ng-click="panel.select(5)">API</a> </li>
 			</ul>
 			<!--<ul class="nav navbar-top-links navbar-left">   												
 							<li><a id="get-home" href="#">Home</a></li>
-							<li><a id="get-add-protocal" href="#">Add Protocal</a></li>
+							<li><a id="get-add-protocol" href="#">Add protocol</a></li>
 							<li><a id="get-import" href="#">Import</a></li>							
 							<li><a id="get-search" href="#">Advanced Search</a></li>
 							<li><a id="get-api" href="#">API</a></li>							
@@ -98,7 +102,7 @@
                 <div class="sidebar-nav navbar-collapse">					
                     <ul class="nav" id="side-menu">
 						<li>
-							<h4 class="navbar-brand">Protocals</h4>
+							<h4 class="navbar-brand">protocols</h4>
 						</li>
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
@@ -115,27 +119,27 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-								<li> <a href ng-click="panel.selectProtocals('CT','head')">head</a></li>						                               
+								<li> <a href ng-click="panel.selectprotocols('CT','head')">head</a></li>						                               
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','neck')">neck</a>
+                                    <a href ng-click="panel.selectprotocols('CT','neck')">neck</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Cervical Spine')">Cervical Spine</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Cervical Spine')">Cervical Spine</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Thoracic Spine')">Thoracic Spine</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Thoracic Spine')">Thoracic Spine</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Lumbar Spine')">Lumbar Spine</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Lumbar Spine')">Lumbar Spine</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Lumbar Spinal Cord')">Lumbar Spinal Cord</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Lumbar Spinal Cord')">Lumbar Spinal Cord</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Brachial Plexus')">Brachial Plexus</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Brachial Plexus')">Brachial Plexus</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Facial Bones')">Facial Bones</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Facial Bones')">Facial Bones</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -144,31 +148,31 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Musculoskeletal CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Ankle')">Ankle</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Ankle')">Ankle</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Foot')">Foot</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Foot')">Foot</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','neShoulderck')">Shoulder</a>
+                                    <a href ng-click="panel.selectprotocols('CT','neShoulderck')">Shoulder</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Wrist')">Wrist</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Wrist')">Wrist</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Hand')">Hand</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Hand')">Hand</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Pelvis')">Pelvis</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Pelvis')">Pelvis</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Hip')">Hip</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Hip')">Hip</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Knee')">Knee</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Knee')">Knee</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('CT','Variable')">Variable</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Variable')">Variable</a>
                                 </li>								
                             </ul>
                             <!-- /.nav-second-level -->
@@ -177,10 +181,10 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Body CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Abdomen/Pelvis')">Abdomen/Pelvis</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Abdomen/Pelvis')">Abdomen/Pelvis</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Others')">Others</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Others')">Others</a>
                                 </li>                                	
                             </ul>
                             <!-- /.nav-second-level -->
@@ -189,40 +193,40 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Cardiac CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('CT','Heart')">Heart</a>
+                                    <a href ng-click="panel.selectprotocols('CT','Heart')">Heart</a>
                                 </li>                                                          
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
 						<li>
-                            <a href href ng-click="panel.selectProtocals('MR','')"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
+                            <a href href ng-click="panel.selectprotocols('MR','')"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
                         </li>
-						<li class="active">
+						<li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro MR<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a class="active" href ng-click="panel.selectProtocals('MR','Head')">Head</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Head')">Head</a>
                                 </li>                                                          
 								<li>
-                                    <a href ng-click="panel.selectProtocals('MR','neck')">Neck</a>
+                                    <a href ng-click="panel.selectprotocols('MR','neck')">Neck</a>
                                 </li> 
 								<li>
-                                    <a href ng-click="panel.selectProtocals('MR','Cervical Spine')"> Cervical Spine</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Cervical Spine')"> Cervical Spine</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('MR','Thoracic Spine')">Thoracic Spine</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Thoracic Spine')">Thoracic Spine</a>
                                 </li>
                                 <li>
-                                    <a href ng-click="panel.selectProtocals('MR','Lumbar Spine')">Lumbar Spine</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Lumbar Spine')">Lumbar Spine</a>
                                 </li>
 								<li>
-                                    <a href ng-click="panel.selectProtocals('MR','CTL Spine')">CTL Spine</a>
+                                    <a href ng-click="panel.selectprotocols('MR','CTL Spine')">CTL Spine</a>
                                 </li> 
 								<li>
-                                    <a href ng-click="panel.selectProtocals('MR','Variable')">Variable</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Variable')">Variable</a>
                                 </li> 
 								<li>
-                                    <a href ng-click="panel.selectProtocals('MR','others')">others</a>
+                                    <a href ng-click="panel.selectprotocols('MR','others')">others</a>
                                 </li> 
                             </ul>
                             <!-- /.nav-second-level -->
@@ -254,7 +258,7 @@
 			<div ng-show="panel.isSelected(2)">
 			<div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add a protocal</h1>
+                    <h1 class="page-header">Add a protocol</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div> 
@@ -262,15 +266,29 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Protocal
+                            protocol
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" name="protocalForm" ng-controller="ProtocalController as protocalCtrl" ng-submit="addProtocal()" novalidate>
+                                    <form role="form" name="protocolForm" ng-controller="protocolController as protocolCtrl" ng-submit="addprotocol()" novalidate>
+										 <div class="form-group">
+                                            <label>Modality</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="CT" checked ng-model="cred.modality">CT
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="MR" ng-model="cred.modality">MR
+                                            </label>                                            
+                                        </div>
                                         <div class="form-group">
-                                            <label>Protocal Name</label>
-                                            <input class="form-control" placeholder="Enter text" ng-model="cred.protocal_name" required>
+                                            <label>protocol Number</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.protocol_number" required>
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div>   
+										<div class="form-group">
+                                            <label>protocol Name</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.protocol_name">
                                             <p class="help-block">Example block-level help text here.</p>
                                         </div>                                                                              
                                         <div class="form-group">
@@ -282,16 +300,7 @@
                                             <label>Description</label>
                                             <textarea class="form-control" rows="3" ng-model="cred.description"></textarea>
                                         </div>
-                                                                                
-                                        <div class="form-group">
-                                            <label>Modality</label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="CT" checked ng-model="cred.modality">CT
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="MR" ng-model="cred.modality">MR
-                                            </label>                                            
-                                        </div>
+                                                                                                                       
 										<div class="form-group">
                                             <label>General Body Part</label>
                                             <input class="form-control" placeholder="Enter text" ng-model="cred.bodypart">
@@ -351,7 +360,30 @@
                                             <label>Notes</label>
                                             <textarea class="form-control" rows="3" ng-model="cred.notes"></textarea>
                                         </div>										
-                                        <button type="submit" class="btn btn-default" ng-disabled="!protocalForm.$valid">Submit Button</button>
+										<div class="form-group">
+                                            <label>Indication</label>
+                                            <textarea class="form-control" rows="3" ng-model="cred.indication"></textarea>
+                                        </div>		
+										<div class="form-group">
+                                            <label>Patient Orientation</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.patient_orientation">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+										<div class="form-group">
+                                            <label>Landmark</label>
+                                            <textarea class="form-control" rows="3" ng-model="cred.landmark"></textarea>
+                                        </div>	
+										<div class="form-group">
+                                            <label>Intravenous Contrast</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.intravenous_contrast">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+										<div class="form-group">
+                                            <label>Scout</label>
+                                            <input class="form-control" placeholder="Enter text" ng-model="cred.scout">
+                                            <p class="help-block">Example block-level help text here.</p>
+                                        </div> 
+                                        <button type="submit" class="btn btn-default" ng-disabled="!protocolForm.$valid">Submit Button</button>
                                         <button type="reset" class="btn btn-default">Reset Button</button>
                                     </form>
                                 </div>
@@ -364,15 +396,14 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
- 
+            <!-- /.row -->				
 		
 			</div>
-        <!-- /#page-wrapper -->
+			
 			<div ng-show="panel.isSelected(6)">				 
 			<div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Protocal</h1>
+                    <h1 class="page-header">protocol</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>       
@@ -389,10 +420,10 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Protocal Name</th>
+											<th>protocol Nnumber</th>
+                                            <th>protocol Name</th>
                                             <th>Code</th>
                                             <th>Description</th>
-                                            <th>Modality</th>
                                             <th>General Body Part</th>
 											<th>Body Part Code</th>
                                             <th>Detailed Body Part</th>
@@ -400,28 +431,35 @@
                                             <th>Golive date</th>
                                             <th>Approved by</th>
 											<th>Series</th>
-                                            <th>Scan position</th>
-											<th>Note</th>                                            
+											<th>Note</th>  
+											<th>Indication</th>
+											<th>Patient Orientation</th>
+											<th>Landmark</th>
+											<th>Intravenous Contrast</th>
+											<th>Scout</th>
 										</tr>
                                     </thead>
-                                    <tbody>
-										<div ng-repeat="protocal in pdata.protocals">
-                                        <tr class="odd gradeX">
-                                            <td>{{protocal.protocal_name}}</td>
-                                            <td>{{protocal.code}}</td>
-                                            <td>{{protocal.description}}</td>
-											<td>{{protocal.modality}}</td>
-                                            <td class="center">{{protocal.bodypart}}</td>
-                                            <td class="center">{{protocal.bodypart_code}}</td>
-											<td>{{protocal.bodypart_full}}</td>
-                                            <td>{{protocal.approval_date}}</td>
-                                            <td>{{protocal.golive_date}}</td>
-											<td>{{protocal.approved_by}}</td>
-                                            <td>{{protocal.series}}</td>
-                                            <td>{{protocal.scan_position}}</td>
-											<td>{{protocal.notes}}</td>                                            
-                                        </tr>
-										</div>                                        
+                                    <tbody>										 									
+										
+                                        <tr class="odd gradeX" ng-repeat="protocol in protocols">										
+											<td>{{protocol.protocol_number}}</td>
+                                            <td>{{protocol.protocol_name}}</td>
+                                            <td>{{protocol.code}}</td>
+                                            <td>{{protocol.description}}</td>
+                                            <td class="center">{{protocol.bodypart}}</td>
+                                            <td class="center">{{protocol.bodypart_code}}</td>
+											<td>{{protocol.bodypart_full}}</td>
+                                            <td>{{protocol.approval_date}}</td>
+                                            <td>{{protocol.golive_date}}</td>
+											<td>{{protocol.approved_by}}</td>
+                                            <td>{{protocol.series}}</td>
+											<td>{{protocol.notes}}</td>  
+											<td>{{protocol.indication}}</td>  
+											<td>{{protocol.patient_orientation}}</td>  
+											<td>{{protocol.landmark}}</td>  
+											<td>{{protocol.intravenous_contrast}}</td>
+											<td>{{protocol.scout}}</td>  
+                                        </tr>                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -438,8 +476,7 @@
     </div>
     <!-- /#wrapper -->
 
-	<script type="text/javascript" src="js/angular.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
+	
 	
 </body>
 
