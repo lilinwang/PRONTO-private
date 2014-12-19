@@ -21,7 +21,8 @@
 
     <!-- Custom CSS -->
     <link href="css/sb-admin-2.css" rel="stylesheet">
-
+	<link rel="stylesheet" href="css/jquery-ui.css">
+	
     <!-- Custom Fonts -->
     <link href="font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -35,7 +36,11 @@
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>	
+	<!-- JQuery UI JavaScript-->	
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	
+    <script type="text/javascript" src="js/bootstrap-filestyle.js"> </script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
@@ -44,6 +49,77 @@
     <script src="js/sb-admin-2.js"></script>	
 	<script type="text/javascript" src="js/angular.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript">
+	var opt={				
+		height: 150,
+        width: 250,
+		autoOpen: false,		
+	}
+	/*function search_name(){	
+			if (document.getElementById("quick_search").value==''){
+				$("#dialog").html("<p>Please input company name!</p>");
+				var theDialog = $("#dialog").dialog(opt);					
+				var dialog = theDialog.dialog("open");
+				setTimeout(function() { dialog.dialog("close"); }, 1000);
+				return;
+			}
+			
+			$('#search-icon').html('<i class="fa fa-spin fa-spinner"></i>');
+	     	$.post("ajax/search_by_tag", 
+			{								
+				content:document.getElementById("quick_search").value		
+            },
+			function(data,status){
+				data = eval("(" + data + ")");
+				//console.log(data);
+				///alert(data[0]+" "+data[1]);
+				if (data[0]==0 && data[1]==0){  					
+						$('#search-icon').html('<i class="fa fa-search"></i>');
+						$("#dialog").html("<p>Company not found! Try another one!</p>");
+						var theDialog = $("#dialog").dialog(opt);					
+						var dialog = theDialog.dialog("open");
+						setTimeout(function() { dialog.dialog("close"); }, 1000);										
+						return;		
+				}
+				for (i=0;i<data.length;i++){	
+					if (data[i]==0){ 
+						continue;
+					}			                
+				}											
+				$('#search-icon').html('<i class="fa fa-search"></i>');
+			});            			
+	};*/
+	function upload(){						
+		var file_data = $("#userfile").prop("files")[0];   		
+		var fileName = $("#userfile").val();
+		
+		if(fileName.lastIndexOf("csv")===fileName.length-3){										
+			$('#upload-icon').html('<i class="fa fa-spin fa-spinner"></i>');
+			var form_data = new FormData();                  
+			form_data.append("file", file_data);  
+			//console.log($('input[name=optionsImport]:checked').val());
+			form_data.append("modality",$('input[name=optionsImport]:checked').val());
+			$.ajax({
+                url: "ajax/upload",               
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,                         
+                type: 'post',
+				enctype: 'multipart/form-data',
+                complete: function(data){				
+					console.log(data['responseText']);																                   				
+					$('#upload-icon').html('<i class="fa fa-upload"></i>');					
+                }
+			});				            			     	
+		}else{
+			$("#dialog").html("<p>Not csv file choosen!</p>");
+			var theDialog = $("#dialog").dialog(opt);					
+			var dialog = theDialog.dialog("open");
+			setTimeout(function() { dialog.dialog("close"); }, 1000);
+		}
+	};			
+	</script>
 </head>
 
 <body ng-controller="PanelController as panel">
@@ -69,15 +145,7 @@
 						<li ng-class="{ active: panel.isSelected(4)}"> <a href ng-click="panel.select(4)">Advanced Search</a> </li>
 						<li ng-class="{ active: panel.isSelected(5)}"> <a href ng-click="panel.select(5)">API</a> </li>
 			</ul>
-			<!--<ul class="nav navbar-top-links navbar-left">   												
-							<li><a id="get-home" href="#">Home</a></li>
-							<li><a id="get-add-protocol" href="#">Add protocol</a></li>
-							<li><a id="get-import" href="#">Import</a></li>							
-							<li><a id="get-search" href="#">Advanced Search</a></li>
-							<li><a id="get-api" href="#">API</a></li>							
-						
-			</ul>
-			-->
+			
             <ul class="nav navbar-top-links navbar-right">      
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -106,9 +174,9 @@
 						</li>
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                                <input type="text" ng-model="search_key" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
+                                    <button class="btn btn-default" ng-click="panel.searchprotocols()" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </span>
@@ -396,9 +464,35 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->				
-		
+            <!-- /.row -->						
 			</div>
+			
+			
+			<div ng-show="panel.isSelected(3)">
+						<div class="form-group">
+                                            <label>Please choose Modality:</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsImport" value="CT" checked>CT
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsImport" value="MR">MR
+                                            </label>                                            
+                        </div>
+						<div  class="input-group" style="width:500px;margin-left:15px;height:50px;">
+							<span class="input-group-btn">
+								<span class="input-group-btn">
+								<input type="file" class="filestyle" data-buttonText="Choose csv file" id="userfile" name='userfile' >
+								</span>
+                                <span class="input-group-btn">
+									
+                                    <button class="btn btn-default" onclick="upload()" name="submit" type="button" id="upload-icon">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </span>
+							</span>
+                        </div>									
+			</div>
+			
 			
 			<div ng-show="panel.isSelected(6)">				 
 			<div class="row">
@@ -439,8 +533,7 @@
 											<th>Scout</th>
 										</tr>
                                     </thead>
-                                    <tbody>										 									
-										
+                                    <tbody>										 																			
                                         <tr class="odd gradeX" ng-repeat="protocol in protocols">										
 											<td>{{protocol.protocol_number}}</td>
                                             <td>{{protocol.protocol_name}}</td>
@@ -473,11 +566,12 @@
             </div>
             <!-- /.row -->
 			</div>
+						
     </div>
     <!-- /#wrapper -->
 
 	
-	
+	<div id="dialog" title="Alerts">
 </body>
 
 </html>

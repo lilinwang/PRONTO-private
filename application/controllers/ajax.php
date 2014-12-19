@@ -73,4 +73,36 @@ class Ajax extends CI_Controller {
 		$data['focus_list']=explode('|',substr($list,1,strlen($list)-2));
 		echo json_encode($data);
 	}		
+	function search_protocol(){
+		$data = json_decode(file_get_contents("php://input"));
+		
+		$content = mysql_real_escape_string($data->content);
+				
+			$this->load->model('protocol_ct_model');				
+			$result= $this->protocol_ct_model->get_list_by_bodypart_indication($content);		
+		/*
+			$this->load->model('protocol_mr_model');				
+			$result= $this->protocol_mr_model->get_list_by_bodypart($bodypart_full);		
+		*/
+			
+		echo json_encode($result);		
+	}
+	function upload(){			
+		if ( 0 < $_FILES['file']['error'] ) {
+			echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+		}
+		else {
+			$dest='uploads/'.$_FILES['file']['name'];
+			move_uploaded_file($_FILES['file']['tmp_name'],$dest);							
+		}	
+		$modality=$_POST['modality'];
+		if ($modality=="CT"){
+			$this->load->model('protocol_ct_model');				
+			$result= $this->protocol_ct_model->import_file($dest);		
+		}else{
+			$this->load->model('protocol_mr_model');				
+			$result= $this->protocol_mr_model->import_file($dest);		
+		}
+		echo "success";
+	}
 }

@@ -36,6 +36,31 @@ class protocol_ct_model extends CI_Model{
             return null;
         }
 	}
+	function get_list_by_bodypart_indication($content)
+	{
+		$sql = 'SELECT * FROM protocol_ct WHERE bodypart_full LIKE ? OR indication LIKE ?';
+		$params = array($content,$content);
+		
+        $query = $this->db->query($sql, $params);
+        if ($query->num_rows() > 0) {
+			$result=$query->result_array();
+			return $result;            
+        }
+        else {
+            return null;
+        }
+	}
+	
+	function import_file($dest){	
+	/*	$sql=
+				LOAD DATA INFILE ?
+				INTO TABLE tableName
+				FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+				LINES TERMINATED BY '\n'
+				(field1,field2,field3,etc)
+		*/
+		
+	}
 	/*function get_thumb_by_upload_id($upload_id)
 	{
 		$sql = 'SELECT thumbimg_dir FROM upload WHERE upload_id=?';

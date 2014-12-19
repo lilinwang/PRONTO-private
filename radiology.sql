@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 17, 2014 at 07:41 AM
+-- Generation Time: Dec 17, 2014 at 07:06 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -25,34 +25,54 @@ USE `radiology`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `protocal`
+-- Table structure for table `protocol_ct`
 --
 
-CREATE TABLE IF NOT EXISTS `protocal` (
-  `protocol_name` varchar(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `protocol_ct` (
+  `protocol_number` varchar(50) NOT NULL,
+  `protocol_name` varchar(255) DEFAULT NULL,
   `code` int(11) DEFAULT NULL,
   `description` text,
-  `modality` varchar(10) DEFAULT NULL,
-  `bodypart` int(50) DEFAULT NULL,
+  `bodypart` varchar(50) DEFAULT NULL,
   `bodypart_code` int(11) DEFAULT NULL,
-  `bodypart_full` int(255) DEFAULT NULL,
+  `bodypart_full` varchar(255) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `golive_date` date DEFAULT NULL,
   `approved_by` varchar(255) DEFAULT NULL,
   `series` text,
-  `scan position` text,
-  `notes` text
+  `notes` text,
+  `indication` text,
+  `patient_orientation` varchar(50) DEFAULT NULL,
+  `landmark` text,
+  `intravenous_contrast` varchar(50) DEFAULT NULL,
+  `scout` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `series`
+-- Table structure for table `series_ct`
 --
 
-CREATE TABLE IF NOT EXISTS `series` (
+CREATE TABLE IF NOT EXISTS `series_ct` (
   `series_name` varchar(255) NOT NULL,
-  `content` text
+  `scanning_mode` varchar(50) DEFAULT NULL,
+  `range_direction` text,
+  `gantry_angle` text,
+  `algorithm` varchar(50) DEFAULT NULL,
+  `collimation` varchar(50) DEFAULT NULL,
+  `slice_thickness` varchar(50) DEFAULT NULL,
+  `interval` varchar(50) DEFAULT NULL,
+  `table_speed` varchar(255) DEFAULT NULL,
+  `pitch` varchar(255) DEFAULT NULL,
+  `kvp` int(11) DEFAULT NULL,
+  `am` varchar(50) DEFAULT NULL,
+  `rotation_time` varchar(50) DEFAULT NULL,
+  `scan_fov` varchar(50) DEFAULT NULL,
+  `display_fov` varchar(50) DEFAULT NULL,
+  `post_processing` text,
+  `transfer_images` text,
+  `notes` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -67,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` text NOT NULL,
   `reg_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
