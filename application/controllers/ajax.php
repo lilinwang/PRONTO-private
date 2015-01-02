@@ -1,65 +1,74 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Ajax extends CI_Controller {
-
+	function __construct() {
+        parent::__construct();
+		$this->load->model('series_ct_model');
+		$this->load->model('series_mr_model');
+        $this->load->library('csvimport');
+    }
+	
     function index()
     {
         exit('Access denied');
     }
 	public function add_protocol(){	
 		$data = json_decode(file_get_contents("php://input"));
+		$this->load->model('protocol_model');	
+		$protocol_data = array(
+                        'protocol_name'=>mysql_real_escape_string($data->protocol_name),
+                        'protocol_number'=>mysql_real_escape_string($data->protocol_number),
+                        'code'=>(mysql_real_escape_string($data->code)==null)?NULL:mysql_real_escape_string($data->code),
+                        'description'=>mysql_real_escape_string($data->description),
+						'modality'=>mysql_real_escape_string($data->modality),
+                        'bodypart'=>mysql_real_escape_string($data->bodypart),
+                        'bodypart_code'=>NULL,
+                        'bodypart_full'=>mysql_real_escape_string($data->bodypart_full),
+						'approval_date'=>(mysql_real_escape_string($data->approval_date)==null)?NULL:mysql_real_escape_string($data->approval_date),
+                        'golive_date'=>(mysql_real_escape_string($data->golive_date)==null)?NULL:mysql_real_escape_string($data->golive_date),
+                        'approved_by'=>mysql_real_escape_string($data->approved_by)                       
+        );	
+		$series_data = array(
+						'series_id'=>mysql_real_escape_string($data->series),
+                        'indication'=>mysql_real_escape_string($data->indication),
+                        'patient_orientation'=>mysql_real_escape_string($data->patient_orientation),
+                        'landmark'=>mysql_real_escape_string($data->landmark),
+                        'intravenous_contrast'=>mysql_real_escape_string($data->intravenous_contrast),
+						'scout'=>mysql_real_escape_string($data->scout),
+                        'scanning_mode'=>NULL,
+                        'range_direction'=>NULL,
+                        'gantry_angle'=>NULL,
+						'algorithm'=>NULL,
+                        'collimation'=>NULL,
+                        'slice_thickness'=>NULL,
+                        'interval'=>NULL,
+						'table_speed'=>NULL,
+                        'pitch'=>NULL,
+						'kvp'=>NULL,
+                        'am'=>NULL,
+                        'rotation_time'=>NULL,
+                        'scan_fov'=>NULL,
+						'display_fov'=>NULL,
+                        'post_processing'=>NULL,
+						'transfer_images'=>NULL,
+                        'notes'=>mysql_real_escape_string($data->notes),
+						'protocol_number'=>mysql_real_escape_string($data->protocol_number)
+        );
+		$result= $this->protocol_model->insert_new($protocol_data,mysql_real_escape_string($data->protocol_number));
+		$this->load->model('series_ct_model');	
+        $this->series_ct_model->insert_new($series_data,mysql_real_escape_string($data->series));
 		
-		$notes = mysql_real_escape_string($data->notes);
-		$series = mysql_real_escape_string($data->series);		
-		$approved_by = mysql_real_escape_string($data->approved_by);
-		$golive_date = mysql_real_escape_string($data->golive_date);
-		$approval_date = mysql_real_escape_string($data->approval_date);
-		$bodypart = mysql_real_escape_string($data->bodypart);
-		$bodypart_full = mysql_real_escape_string($data->bodypart_full);		
-		$description = mysql_real_escape_string($data->description);
-		$code = mysql_real_escape_string($data->code);
-		$protocol_name=mysql_real_escape_string($data->protocol_name);	
-		$protocol_number=mysql_real_escape_string($data->protocol_number);	
-		$indication=mysql_real_escape_string($data->indication);	
-		$patient_orientation=mysql_real_escape_string($data->patient_orientation);	
-		$landmark=mysql_real_escape_string($data->landmark);	
-		$intravenous_contrast=mysql_real_escape_string($data->intravenous_contrast);	
-		$scout=mysql_real_escape_string($data->scout);	
-//echo json_encode($protocol_name);			
-		/*$protocol_number=$this->input->post('protocol_number');
-		$protocol_name=$this->input->post('protocol_name');
-		$code=$this->input->post('code');
-		$description=$this->input->post('description');
-		$bodypart=$this->input->post('bodypart');
-		$bodypart_full=$this->input->post('bodypart_full');
-		$approval_date=$this->input->post('approval_date');
-		$golive_date=$this->input->post('golive_date');
-		$approved_by=$this->input->post('approved_by');
-		$series=$this->input->post('series');		
-		$notes=$this->input->post('notes');				
-		$indication=$this->input->post('indication');
-		$patient_orientation=$this->input->post('patient_orientation');
-		$landmark=$this->input->post('landmark');
-		$intravenous_contrast=$this->input->post('intravenous_contrast');
-		$scout=$this->input->post('scout');*/
-		
-		//echo $user_id;
-		$this->load->model('protocol_ct_model');				
-		$result= $this->protocol_ct_model->insert_new($protocol_number,$protocol_name,$code,$description,$bodypart,$bodypart_full,$approval_date,$golive_date,$approved_by,$series,$notes,$indication,$patient_orientation,$landmark,$intravenous_contrast,$scout);			
 		echo json_encode($result);			
 	}
+	
 	function get_protocol(){	
 		$data = json_decode(file_get_contents("php://input"));
 		
 		$modality = mysql_real_escape_string($data->modality);
-		$bodypart_full = mysql_real_escape_string($data->bodypart_full);	
-		if ($modality=="CT"){
-			$this->load->model('protocol_ct_model');				
-			$result= $this->protocol_ct_model->get_list_by_bodypart($bodypart_full);		
-		}else{
-			$this->load->model('protocol_mr_model');				
-			$result= $this->protocol_mr_model->get_list_by_bodypart($bodypart_full);		
-		}
+		$bodypart_full = mysql_real_escape_string($data->bodypart_full);			
+		$this->load->model('protocol_model');				
+		$result= $this->protocol_model->get_list_by_bodypart($bodypart_full,$modality);		
+		
 			
 		echo json_encode($result);				
 	}
@@ -77,32 +86,96 @@ class Ajax extends CI_Controller {
 		$data = json_decode(file_get_contents("php://input"));
 		
 		$content = mysql_real_escape_string($data->content);
-				
-			$this->load->model('protocol_ct_model');				
-			$result= $this->protocol_ct_model->get_list_by_bodypart_indication($content);		
-		/*
-			$this->load->model('protocol_mr_model');				
-			$result= $this->protocol_mr_model->get_list_by_bodypart($bodypart_full);		
-		*/
-			
+		//echo $content;		
+		$this->load->model('protocol_model');				
+		$result= $this->protocol_model->get_list_by_keywords($content);						
 		echo json_encode($result);		
-	}
-	function upload(){			
+	}		
+	
+	function upload(){	
+		$config['allowed_types'] = 'csv';
 		if ( 0 < $_FILES['file']['error'] ) {
 			echo 'Error: ' . $_FILES['file']['error'] . '<br>';
 		}
 		else {
 			$dest='uploads/'.$_FILES['file']['name'];
 			move_uploaded_file($_FILES['file']['tmp_name'],$dest);							
-		}	
-		$modality=$_POST['modality'];
-		if ($modality=="CT"){
-			$this->load->model('protocol_ct_model');				
-			$result= $this->protocol_ct_model->import_file($dest);		
-		}else{
-			$this->load->model('protocol_mr_model');				
-			$result= $this->protocol_mr_model->import_file($dest);		
-		}
-		echo "success";
+		}					
+		 
+        $file_path = $dest;
+		
+		$this->load->model('protocol_model');
+		
+        if ($this->csvimport->get_array($file_path)) {
+			$csv_array = $this->csvimport->get_array($file_path);
+			foreach ($csv_array as $row) {					
+                $protocol_data = array(
+                        'protocol_name'=>$row['Protocol Name'],
+                        'protocol_number'=>$row['Protocol ID'],
+                        'code'=>($row['Code']==null)?NULL:$row['Code'],
+                        'description'=>$row['Description'],
+						'modality'=>$row['Modality'],
+                        'bodypart'=>$row['BodyPart'],
+                        'bodypart_code'=>($row['BodyPart Code']==null)?NULL:$row['BodyPart Code'],
+                        'bodypart_full'=>$row['BodyPart Full'],
+						'approval_date'=>($row['Approval Date']==null)?NULL:$row['Approval Date'],
+                        'golive_date'=>($row['Go-Live Date']==null)?NULL:$row['Go-Live Date'],
+                        'approved_by'=>$row['Approved by']                        
+                );					
+				if ($row['Protocol ID']==NULL) break;									
+                $this->protocol_model->insert_new($protocol_data,$row['Protocol ID']);
+				if (strtoupper($protocol_data['modality'])==='MR'){
+					$series_data = array(
+                        'firstname'=>$row['Protocol Name'],
+                        'lastname'=>$row['Protocol ID'],
+                        'phone'=>$row['Code'],
+                        'email'=>$row['Description'],
+						'firstname'=>$row['Modality'],
+                        'lastname'=>$row['BodyPart'],
+                        'phone'=>$row['BodyPart Code'],
+                        'email'=>$row['BodyPart Full'],
+						'firstname'=>$row['Approval Date'],
+                        'lastname'=>$row['Go-Live Date'],
+                        'phone'=>$row['Approved by'],
+                        'email'=>$row['Series']
+                    );
+                    $this->series_mr_model->insert_new($series_data,$row['Series']);
+				}else{
+					$series_data = array(
+						'series_id'=>$row['Series'],
+                        'indication'=>$row['Indications'],
+                        'patient_orientation'=>$row['Patient Orientation'],
+                        'landmark'=>$row['Landmark'],
+                        'intravenous_contrast'=>$row['Intravenous Contrast'],
+						'scout'=>$row['Scout'],
+                        'scanning_mode'=>$row['Scanning Mode'],
+                        'range_direction'=>$row['Range/Direction'],
+                        'gantry_angle'=>$row['Gantry Angle'],
+						'algorithm'=>$row['Algorithm'],
+                        'collimation'=>$row['Collimation'],
+                        'slice_thickness'=>$row['Slice Thickness'],
+                        'interval'=>$row['Interval'],
+						'table_speed'=>$row['Table Speed (mm/rotation)'],
+                        'pitch'=>$row['Pitch'],
+						'kvp'=>($row['kVp']==null)?NULL:$row['kVp'],
+                        'am'=>$row['mA'],
+                        'rotation_time'=>$row['Rotation Time'],
+                        'scan_fov'=>$row['Scan FOV'],
+						'display_fov'=>$row['Display FOV'],
+                        'post_processing'=>$row['Post Processing'],
+						'transfer_images'=>$row['Transfer Images'],
+                        'notes'=>$row['Notes'],
+						'protocol_number'=>$row['Protocol ID']
+                    );
+                    $this->series_ct_model->insert_new($series_data,$row['Series']);
+				}					
+			}
+			//$this->session->set_flashdata('success', 'Csv Data Imported Succesfully');
+			echo "Import success!";
+		} else {
+            $data['error'] = "Error occured";
+            //$this->load->view('csvindex', $data);
+			echo 0;
+        }		
 	}
 }

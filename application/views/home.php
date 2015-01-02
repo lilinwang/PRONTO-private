@@ -97,8 +97,6 @@
 			$('#upload-icon').html('<i class="fa fa-spin fa-spinner"></i>');
 			var form_data = new FormData();                  
 			form_data.append("file", file_data);  
-			//console.log($('input[name=optionsImport]:checked').val());
-			form_data.append("modality",$('input[name=optionsImport]:checked').val());
 			$.ajax({
                 url: "ajax/upload",               
                 cache: false,
@@ -108,8 +106,12 @@
                 type: 'post',
 				enctype: 'multipart/form-data',
                 complete: function(data){				
-					console.log(data['responseText']);																                   				
+					//console.log(data['responseText']);																                   									
 					$('#upload-icon').html('<i class="fa fa-upload"></i>');					
+					$("#dialog").html("<p>"+data['responseText']+"</p>");
+					var theDialog = $("#dialog").dialog(opt);					
+					var dialog = theDialog.dialog("open");
+					setTimeout(function() { dialog.dialog("close"); }, 1000);
                 }
 			});				            			     	
 		}else{
@@ -139,11 +141,9 @@
             </div>
             <!-- /.navbar-header -->
 			<ul class="nav navbar-top-links navbar-left">
-						<li ng-class="{ active: panel.isSelected(1)}"> <a href ng-click="panel.select(1)">Home</a> </li>
-						<li ng-class="{ active: panel.isSelected(2)}"> <a href ng-click="panel.select(2)">Add protocol</a> </li>
-						<li ng-class="{ active: panel.isSelected(3)}"> <a href ng-click="panel.select(3)">Import</a> </li>
-						<li ng-class="{ active: panel.isSelected(4)}"> <a href ng-click="panel.select(4)">Advanced Search</a> </li>
-						<li ng-class="{ active: panel.isSelected(5)}"> <a href ng-click="panel.select(5)">API</a> </li>
+				<li ng-repeat="section in sections" ng-class="{ active: panel.isSelected(section)}">
+					<a href ng-click="panel.select(section)">{{section}}</a> 
+				</li>					
 			</ul>
 			
             <ul class="nav navbar-top-links navbar-right">      
@@ -308,7 +308,7 @@
 
         <!-- Page Content -->
         <div id="page-wrapper" name="home">
-			<div ng-show="panel.isSelected(1)">				 
+			<div ng-show="panel.isSelected('Home')">				 
 			<div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Home</h1>
@@ -323,7 +323,7 @@
 			</div>
 			</div>
 			
-			<div ng-show="panel.isSelected(2)">
+			<div ng-show="panel.isSelected('Add protocol')">
 			<div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Add a protocol</h1>
@@ -468,16 +468,7 @@
 			</div>
 			
 			
-			<div ng-show="panel.isSelected(3)">
-						<div class="form-group">
-                                            <label>Please choose Modality:</label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="optionsImport" value="CT" checked>CT
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="optionsImport" value="MR">MR
-                                            </label>                                            
-                        </div>
+			<div ng-show="panel.isSelected('Import')">						
 						<div  class="input-group" style="width:500px;margin-left:15px;height:50px;">
 							<span class="input-group-btn">
 								<span class="input-group-btn">
@@ -494,10 +485,10 @@
 			</div>
 			
 			
-			<div ng-show="panel.isSelected(6)">				 
+			<div ng-show="panel.isSelected('Protocols')">				 
 			<div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">protocol</h1>
+                    <h1 class="page-header">Protocols</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>       
@@ -514,44 +505,34 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-											<th>protocol Nnumber</th>
+											<th>protocol ID</th>
                                             <th>protocol Name</th>
                                             <th>Code</th>
                                             <th>Description</th>
+											<th>Modality</th>
                                             <th>General Body Part</th>
 											<th>Body Part Code</th>
                                             <th>Detailed Body Part</th>
-                                            <th>Approval_date</th>
+                                            <th>Approval date</th>
                                             <th>Golive date</th>
-                                            <th>Approved by</th>
-											<th>Series</th>
-											<th>Note</th>  
-											<th>Indication</th>
-											<th>Patient Orientation</th>
-											<th>Landmark</th>
-											<th>Intravenous Contrast</th>
-											<th>Scout</th>
+                                            <th>Approved by</th>																				
 										</tr>
                                     </thead>
                                     <tbody>										 																			
                                         <tr class="odd gradeX" ng-repeat="protocol in protocols">										
-											<td>{{protocol.protocol_number}}</td>
-                                            <td>{{protocol.protocol_name}}</td>
+											<td>		
+												<a target="_blank" ng-href="detailed_protocol?number={{protocol.protocol_number}}">{{protocol.protocol_number}}</a>																				
+											</td>
+                                            <td>{{protocol.protocol_name}}</td>											
                                             <td>{{protocol.code}}</td>
                                             <td>{{protocol.description}}</td>
+											<td>{{protocol.modality}}</td>
                                             <td class="center">{{protocol.bodypart}}</td>
                                             <td class="center">{{protocol.bodypart_code}}</td>
 											<td>{{protocol.bodypart_full}}</td>
                                             <td>{{protocol.approval_date}}</td>
                                             <td>{{protocol.golive_date}}</td>
-											<td>{{protocol.approved_by}}</td>
-                                            <td>{{protocol.series}}</td>
-											<td>{{protocol.notes}}</td>  
-											<td>{{protocol.indication}}</td>  
-											<td>{{protocol.patient_orientation}}</td>  
-											<td>{{protocol.landmark}}</td>  
-											<td>{{protocol.intravenous_contrast}}</td>
-											<td>{{protocol.scout}}</td>  
+											<td>{{protocol.approved_by}}</td>                                            								
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -565,7 +546,50 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-			</div>
+			</div>	
+			
+		<div class="row" ng-show="panel.isSelected('API')">	
+
+			<h1 id="radiology-api"><a href="#radiology-api" class="anchor">Radiology API</a></h1>
+			<p>This project provides an unofficial json API interface to search Radiology data. It eliminates the need to download and parse data from XLS file.</p>
+			<h2 id="api-reference"><a href="#api-reference" class="anchor">API Reference</a></h2>
+
+			<h3 id="get-data-stats"><a href="#get-data-stats" class="anchor">Get data by name</a></h3>
+			<pre class="no-highlight">GET /api/protocol</pre>			
+			<p>Parameters:</p>
+			<ul>
+				<li><code>name</code> - Name of the protocol</li>
+			</ul>
+			<p>Example request:</p>
+			<pre class="no-highlight">http://54.165.111.90/radiology/api/protocol?name=Head without contrast</pre>
+			<p>Returns response:</p>
+			<pre class="no-highlight">{
+    "data": [
+        {
+            "report": "",
+            "description": "Routine cases; including trauma, stroke, tumor, mental status changes, neurological deficits, etc.",            
+        }
+    ]
+}</pre>	
+			<h3 id="get-data-stats"><a href="#get-data-stats" class="anchor">Get data by number</a></h3>
+			<pre class="no-highlight">GET /api/protocolNum</pre>			
+			<p>Parameters:</p>
+			<ul>
+				<li><code>number</code> - Number of the protocol</li>
+			</ul>
+			<p>Example request:</p>
+			<pre class="no-highlight">http://54.165.111.90/radiology/api/protocolNum?number=1</pre>
+			
+			
+			
+			<h2 id="contact"><a href="#contact" class="anchor">Contact</a></h2>
+			<ul>
+				<li>Lilin Wang</li>
+				<li><a href="mailto:lw555@cornell.edu">lw555@cornell.edu</a></li>				
+			</ul>
+		</div>
+		
+			
 						
     </div>
     <!-- /#wrapper -->
