@@ -47,6 +47,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/sb-admin-2.js"></script>	
+	<script src="js/bootbox.min.js"></script>	
 	<script type="text/javascript" src="js/angular.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript">
@@ -55,40 +56,7 @@
         width: 250,
 		autoOpen: false,		
 	}
-	/*function search_name(){	
-			if (document.getElementById("quick_search").value==''){
-				$("#dialog").html("<p>Please input company name!</p>");
-				var theDialog = $("#dialog").dialog(opt);					
-				var dialog = theDialog.dialog("open");
-				setTimeout(function() { dialog.dialog("close"); }, 1000);
-				return;
-			}
-			
-			$('#search-icon').html('<i class="fa fa-spin fa-spinner"></i>');
-	     	$.post("ajax/search_by_tag", 
-			{								
-				content:document.getElementById("quick_search").value		
-            },
-			function(data,status){
-				data = eval("(" + data + ")");
-				//console.log(data);
-				///alert(data[0]+" "+data[1]);
-				if (data[0]==0 && data[1]==0){  					
-						$('#search-icon').html('<i class="fa fa-search"></i>');
-						$("#dialog").html("<p>Company not found! Try another one!</p>");
-						var theDialog = $("#dialog").dialog(opt);					
-						var dialog = theDialog.dialog("open");
-						setTimeout(function() { dialog.dialog("close"); }, 1000);										
-						return;		
-				}
-				for (i=0;i<data.length;i++){	
-					if (data[i]==0){ 
-						continue;
-					}			                
-				}											
-				$('#search-icon').html('<i class="fa fa-search"></i>');
-			});            			
-	};*/
+	
 	function upload(){						
 		var file_data = $("#userfile").prop("files")[0];   		
 		var fileName = $("#userfile").val();
@@ -107,11 +75,21 @@
 				enctype: 'multipart/form-data',
                 complete: function(data){				
 					//console.log(data['responseText']);																                   									
+					var response = JSON.parse(data['responseText']);
+					//console.log(response);
 					$('#upload-icon').html('<i class="fa fa-upload"></i>');					
-					$("#dialog").html("<p>"+data['responseText']+"</p>");
+					$("#dialog").html("<p>Import success!</p>");
 					var theDialog = $("#dialog").dialog(opt);					
 					var dialog = theDialog.dialog("open");
 					setTimeout(function() { dialog.dialog("close"); }, 1000);
+					//alert(response.length);
+					//$('#import-result').html(response.length);
+					$('#import-result').append("Imported protocols:<ul>");
+					for (var i=0;i<response.length;i++){
+						$('#import-result').append("<li>"+response[i]+"</li>");
+					}
+					$('#import-result').append("</ul>");
+					//<p id='result'></p>
                 }
 			});				            			     	
 		}else{
@@ -137,7 +115,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Radiology</a>
+                <a class="navbar-brand" href="home">Radiology Protocols</a>
             </div>
             <!-- /.navbar-header -->
 			<ul class="nav navbar-top-links navbar-left">
@@ -323,12 +301,12 @@
 			</div>
 			</div>
 			
-			<div ng-show="panel.isSelected('Add protocol')">
+		<!--	<div ng-show="panel.isSelected('Add protocol')">
 			<div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Add a protocol</h1>
                 </div>
-                <!-- /.col-lg-12 -->
+               
             </div> 
 			<div class="row">
                 <div class="col-lg-12">
@@ -456,17 +434,17 @@
                                     </form>
                                 </div>
                             </div>
-                            <!-- /.row (nested) -->
+                           
                         </div>
-                        <!-- /.panel-body -->
+                     
                     </div>
-                    <!-- /.panel -->
+                    
                 </div>
-                <!-- /.col-lg-12 -->
+              
             </div>
-            <!-- /.row -->						
+           				
 			</div>
-			
+			-->
 			
 			<div ng-show="panel.isSelected('Import')">						
 						<div  class="input-group" style="width:500px;margin-left:15px;height:50px;">
@@ -482,6 +460,7 @@
                                 </span>
 							</span>
                         </div>									
+						<p id='import-result'></p>
 			</div>
 			
 			
@@ -520,8 +499,8 @@
                                     </thead>
                                     <tbody>										 																			
                                         <tr class="odd gradeX" ng-repeat="protocol in protocols">										
-											<td>		
-												<a target="_blank" ng-href="detailed_protocol?number={{protocol.protocol_number}}">{{protocol.protocol_number}}</a>																				
+											<td>	
+												<a href ng-click="panel.showDetailedProtocol(protocol.protocol_number)">{{protocol.protocol_number}}</a>																		
 											</td>
                                             <td>{{protocol.protocol_name}}</td>											
                                             <td>{{protocol.code}}</td>
@@ -547,8 +526,145 @@
             </div>
             <!-- /.row -->
 			</div>	
+						
+		 <div class="row" ng-show="panel.isSelected('DetailedProtocol')">
+							 
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Detailed Protocol</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>       
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Protocol
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+								<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+											<th>protocol ID</th>
+                                            <th>protocol Name</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+											<th>Modality</th>
+                                            <th>General Body Part</th>
+											<th>Body Part Code</th>
+                                            <th>Detailed Body Part</th>
+                                            <th>Approval_date</th>
+                                            <th>Golive date</th>
+                                            <th>Approved by</th>									
+										</tr>
+                                    </thead>
+                                    <tbody>										 																			
+                                        <tr class="odd gradeX" ng-repeat="protocol in protocols">										
+											<td>		
+												{{protocol.protocol_number}}
+											</td>
+                                            <td>{{protocol.protocol_name}}</td>											
+                                            <td>{{protocol.code}}</td>
+                                            <td>{{protocol.description}}</td>
+											<td>{{protocol.modality}}</td>
+                                            <td class="center">{{protocol.bodypart}}</td>
+                                            <td class="center">{{protocol.bodypart_code}}</td>
+											<td>{{protocol.bodypart_full}}</td>
+                                            <td>{{protocol.approval_date}}</td>
+                                            <td>{{protocol.golive_date}}</td>
+											<td>{{protocol.approved_by}}</td>                                            									 
+                                        </tr>                                       
+                                    </tbody>
+                                </table>
+								 </div>
+                            <!-- /.table-responsive -->                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+					<div class="panel panel-default">
+                        <div class="panel-heading">
+                            Series of Protocol
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+											<th>Series</th>
+                                            <th>Indication</th>
+                                            <th>Patient Orientation</th>
+                                            <th>Landmark</th>
+											<th>Intravenous Contrast</th>
+                                            <th>Scout</th>
+											<th>Scanning Mode</th>
+                                            <th>Range/Direction</th>
+                                            <th>Gantry Angle</th>
+                                            <th>Algorithm</th>
+                                            <th>Collimation</th>
+											<th>Slice Thickness</th>
+                                            <th>Interval</th>	
+											<th>Table Speed (mm/rotation)</th>
+                                            <th>Pitch</th>	
+											<th>kVp</th>
+                                            <th>mA</th>	
+											<th>Rotation Time</th>
+                                            <th>Scan FOV</th>
+                                            <th>Display FOV</th>
+                                            <th>Post Processing</th>
+                                            <th>Transfer Images</th>
+                                            <th>Notes</th>                                            										
+										</tr>
+                                    </thead>
+                                    <tbody>										 																			
+                                        <tr class="odd gradeX" ng-repeat="serie in series">										
+											<td>{{serie.series_id}}</td>
+                                            <td>{{serie.indication}}</td>											
+                                            <td>{{serie.patient_orientation}}</td>
+                                            <td>{{serie.landmark}}</td>
+											<td>{{serie.intravenous_contrast}}</td>
+                                            <td class="center">{{serie.scout}}</td>
+                                            <td class="center">{{serie.scanning_mode}}</td>
+											<td>{{serie.range_direction}}</td>
+                                            <td>{{serie.gantry_angle}}</td>
+                                            <td>{{serie.algorithm}}</td>
+											<td>{{serie.collimation}}</td>    
+											<td>{{serie.slice_thickness}}</td>
+                                            <td>{{serie.interval}}</td>
+                                            <td>{{serie.table_speed}}</td>
+											<td>{{serie.pitch}}</td>  
+											<td>{{serie.kvp}}</td>
+                                            <td>{{serie.am}}</td>
+                                            <td>{{serie.rotation_time}}</td>
+											<td>{{serie.scan_fov}}</td>  
+											<td>{{serie.display_fov}}</td>
+                                            <td>{{serie.post_processing}}</td>
+                                            <td>{{serie.transfer_images}}</td>
+											<td>{{serie.notes}}</td>  											                                                                  								
+                                        </tr>                                       
+                                    </tbody>
+                                </table>
+								
+                            </div>
+                            <!-- /.table-responsive -->                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+			</div>
 			
-		<div class="row" ng-show="panel.isSelected('API')">	
+			<button class="btn btn-default" ng-click="panel.deleteprotocol()" type="button">
+				DELETE PROTOCOL
+            </button>
+			<p id='result'></p>
+		</div>				
+	<!--	<div class="row" ng-show="panel.isSelected('API')">	
 
 			<h1 id="radiology-api"><a href="#radiology-api" class="anchor">Radiology API</a></h1>
 			<p>This project provides an unofficial json API interface to search Radiology data. It eliminates the need to download and parse data from XLS file.</p>
@@ -588,7 +704,7 @@
 				<li><a href="mailto:lw555@cornell.edu">lw555@cornell.edu</a></li>				
 			</ul>
 		</div>
-		
+		-->
 			
 						
     </div>

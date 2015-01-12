@@ -108,8 +108,10 @@ class Ajax extends CI_Controller {
 		
         if ($this->csvimport->get_array($file_path)) {
 			$csv_array = $this->csvimport->get_array($file_path);
-			foreach ($csv_array as $row) {					
-                $protocol_data = array(
+			$imported_protocols=array();
+			
+			foreach ($csv_array as $row) {	
+				$protocol_data = array(
                         'protocol_name'=>$row['Protocol Name'],
                         'protocol_number'=>$row['Protocol ID'],
                         'code'=>($row['Code']==null)?NULL:$row['Code'],
@@ -122,7 +124,9 @@ class Ajax extends CI_Controller {
                         'golive_date'=>($row['Go-Live Date']==null)?NULL:$row['Go-Live Date'],
                         'approved_by'=>$row['Approved by']                        
                 );					
-				if ($row['Protocol ID']==NULL) break;									
+				if ($row['Protocol ID']==NULL) break;	
+				array_push($imported_protocols, $row['Protocol ID'].".".$row['Protocol Name']);
+                				
                 $this->protocol_model->insert_new($protocol_data,$row['Protocol ID']);
 				if (strtoupper($protocol_data['modality'])==='MR'){
 					$series_data = array(
@@ -171,7 +175,7 @@ class Ajax extends CI_Controller {
 				}					
 			}
 			//$this->session->set_flashdata('success', 'Csv Data Imported Succesfully');
-			echo "Import success!";
+			echo json_encode($imported_protocols);
 		} else {
             $data['error'] = "Error occured";
             //$this->load->view('csvindex', $data);

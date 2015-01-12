@@ -73,40 +73,9 @@
 				}
 			});                         
 		}
-});
-			
-
+		});			
 	}
-	function upload(){						
-		var file_data = $("#userfile").prop("files")[0];   		
-		var fileName = $("#userfile").val();
-		
-		if(fileName.lastIndexOf("csv")===fileName.length-3){										
-			$('#upload-icon').html('<i class="fa fa-spin fa-spinner"></i>');
-			var form_data = new FormData();                  
-			form_data.append("file", file_data);  
-			//console.log($('input[name=optionsImport]:checked').val());
-			//form_data.append("modality",$('input[name=optionsImport]:checked').val());
-			$.ajax({
-                url: "ajax/upload",               
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: form_data,                         
-                type: 'post',
-				enctype: 'multipart/form-data',
-                complete: function(data){				
-					console.log(data['responseText']);																                   				
-					$('#upload-icon').html('<i class="fa fa-upload"></i>');					
-                }
-			});				            			     	
-		}else{
-			$("#dialog").html("<p>Not csv file choosen!</p>");
-			var theDialog = $("#dialog").dialog(opt);					
-			var dialog = theDialog.dialog("open");
-			setTimeout(function() { dialog.dialog("close"); }, 1000);
-		}
-	};			
+	
 	</script>
 </head>
 
@@ -289,7 +258,7 @@
 			</div>
 			
 			<button class="btn btn-default" onclick="deleteprotocol()" type="button">
-				Delete whole protocol
+				DELETE PROTOCOL
             </button>
 			<p id='result'></p>
 		</div>				
