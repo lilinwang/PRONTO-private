@@ -5,6 +5,8 @@
 		$scope.search_key="";
 		$scope.protocols=[];
 		$scope.detail_protocol="";
+		$scope.detail_protocol_modality="";
+		$scope.detail_protocol_bodypart="";
 		$scope.series=[];
 		$scope.sections=[
 			'Home',
@@ -16,7 +18,8 @@
 		this.tab='Home';
 		this.selectprotocols=function(modal,bodypart){
 			//console.log(bodypart);
-			this.tab='Protocols';			
+			this.select('Protocols');
+			//this.tab='Protocols';			
 			$http({
 				url: 'ajax/get_protocol',
 				method: "POST",
@@ -36,10 +39,12 @@
 				console.log(data);				
 			});
 		};	
-		this.showDetailedProtocol=function(protocol_number){
+		this.showDetailedProtocol=function(protocol_number,modality,bodypart){
 			console.log(protocol_number);
 			this.tab='DetailedProtocol';	
 			$scope.detail_protocol=protocol_number;
+			$scope.detail_protocol_modality=modality;
+			$scope.detail_protocol_bodypart=bodypart;
 			$http({
 				url: 'detailed_ajax/get_protocol',
 				method: "POST",
@@ -97,7 +102,8 @@
 		this.select=function(setTab){
 			this.tab=setTab;
 		};	
-		this.deleteprotocol=function(){
+		this.deleteprotocol=function(){			
+			var contro=$(this);			
 			bootbox.prompt("Password:", function(result) {                
 				if (result === null) {                                             
 					$('#result').html("Prompt dismissed!");                              
@@ -110,7 +116,8 @@
 					}).success(function (data) {
 					console.log(data);
 						if (data==="1"){
-							$('#result').html("Delete success!"); 
+							contro[0].selectprotocols($scope.detail_protocol_modality,$scope.detail_protocol_bodypart);
+							//$('#result').html("Delete success!"); 
 						}else{
 							$('#result').html("Wrong password!");
 						}			

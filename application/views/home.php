@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Radiology</title>
+    <title>Radiology Protocols</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -152,7 +152,7 @@
 						</li>
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
-                                <input type="text" ng-model="search_key" class="form-control" placeholder="Search...">
+                                <input type="text" ng-model="search_key" ng-keyup="$event.keyCode == 13 && panel.searchprotocols()" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" ng-click="panel.searchprotocols()" type="button">
                                         <i class="fa fa-search"></i>
@@ -165,9 +165,9 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-								<li> <a href ng-click="panel.selectprotocols('CT','head')">head</a></li>						                               
+								<li> <a href ng-click="panel.selectprotocols('CT','head')">Head</a></li>						                               
                                 <li>
-                                    <a href ng-click="panel.selectprotocols('CT','neck')">neck</a>
+                                    <a href ng-click="panel.selectprotocols('CT','neck')">Neck</a>
                                 </li>
                                 <li>
                                     <a href ng-click="panel.selectprotocols('CT','Cervical Spine')">Cervical Spine</a>
@@ -498,9 +498,9 @@
 										</tr>
                                     </thead>
                                     <tbody>										 																			
-                                        <tr class="odd gradeX" ng-repeat="protocol in protocols">										
+                                        <tr class="odd gradeX" ng-repeat="protocol in protocols" ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.modality,protocol.bodypart_full)" style="cursor: pointer">										
 											<td>	
-												<a href ng-click="panel.showDetailedProtocol(protocol.protocol_number)">{{protocol.protocol_number}}</a>																		
+												{{protocol.protocol_number}}																
 											</td>
                                             <td>{{protocol.protocol_name}}</td>											
                                             <td>{{protocol.code}}</td>
@@ -612,6 +612,7 @@
                                             <th>Pitch</th>	
 											<th>kVp</th>
                                             <th>mA</th>	
+											<th>Noise Reduction</th>
 											<th>Rotation Time</th>
                                             <th>Scan FOV</th>
                                             <th>Display FOV</th>
@@ -639,6 +640,7 @@
 											<td>{{serie.pitch}}</td>  
 											<td>{{serie.kvp}}</td>
                                             <td>{{serie.am}}</td>
+											<td>{{serie.noise_reduction}}</td>
                                             <td>{{serie.rotation_time}}</td>
 											<td>{{serie.scan_fov}}</td>  
 											<td>{{serie.display_fov}}</td>

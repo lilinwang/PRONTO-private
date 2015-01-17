@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Radiology</title>
+	<title>Radiology Protocols</title>
 	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
 
@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Radiology</a>								
+                <a class="navbar-brand" href="#">Radiology Protocols</a>								
             </div>
             <!-- /.navbar-header -->            
 			<ul class="nav navbar-top-links navbar-right">
