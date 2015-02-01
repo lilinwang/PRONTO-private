@@ -8,15 +8,32 @@ class series_ct_model extends CI_Model{
 	function insert_new($data,$id){
 		$sql = 'SELECT * FROM series_ct WHERE series_id=?';
 		$params = array($id);
+		$status = 0;//0: new protocol; 1: modified; 2:no change
 		
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
-			$this->db->where('series_id', $id);
-			$this->db->update('series_ct', $data);        
+			$status=2;
+			$arrayobject = new ArrayObject($data);
+
+			for($iterator = $arrayobject->getIterator();
+				$iterator->valid();
+				$iterator->next()) {
+				if ($iterator->current()!=$query->result_array()[0][$iterator->key()]){
+					$status=1;
+					break;
+				}
+			}
+			if ($status==1){				   
+				$this->db->insert('series_ct_backup',$query->result_array()[0]);
+				$this->db->where('series_id', $id);
+				$this->db->update('series_ct', $data);        
+			}
         }
         else {            
 			$this->db->insert('series_ct', $data);
         }		
+		
+		return $status;
 	}	
 	
 	function get_list_by_number($protocol_number){

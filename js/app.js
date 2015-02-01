@@ -40,7 +40,7 @@
 			});
 		};	
 		this.showDetailedProtocol=function(protocol_number,modality,bodypart){
-			console.log(protocol_number);
+			//console.log(protocol_number);
 			this.tab='DetailedProtocol';	
 			$scope.detail_protocol=protocol_number;
 			$scope.detail_protocol_modality=modality;
@@ -50,7 +50,7 @@
 				method: "POST",
 				data : {number:protocol_number}
 			}).success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if (angular.isObject(data)){					
 					$scope.protocols=data.slice(0);
 				}

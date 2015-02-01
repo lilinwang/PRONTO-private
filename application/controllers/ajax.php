@@ -109,8 +109,8 @@ class Ajax extends CI_Controller {
 		
         if ($this->csvimport->get_array($file_path)) {
 			$csv_array = $this->csvimport->get_array($file_path);
-			$imported_protocols=array();
-			
+			$imported_protocols=array(array(),array());
+			//$imported_status=array();
 			foreach ($csv_array as $row) {	
 				$protocol_data = array(
                         'protocol_name'=>$row['Protocol Name'],
@@ -126,9 +126,11 @@ class Ajax extends CI_Controller {
                         'approved_by'=>$row['Approved by']                        
                 );					
 				if ($row['Protocol ID']==NULL) break;	
-				array_push($imported_protocols, $row['Protocol ID'].".".$row['Protocol Name']);
-                				
-                $this->protocol_model->insert_new($protocol_data,$row['Protocol ID']);
+				
+				$protocol_status=$this->protocol_model->insert_new($protocol_data,$row['Protocol ID']);
+				array_push($imported_protocols[0], $row['Protocol ID'].".".$row['Protocol Name']);                			                
+				
+				$series_status;
 				if (strtoupper($protocol_data['modality'])==='MR'){
 					$series_data = array(
                         'firstname'=>$row['Protocol Name'],
@@ -144,7 +146,7 @@ class Ajax extends CI_Controller {
                         'phone'=>$row['Approved by'],
                         'email'=>$row['Series']
                     );
-                    $this->series_mr_model->insert_new($series_data,$row['Series']);
+                    $series_status=$this->series_mr_model->insert_new($series_data,$row['Series']);
 				}else{
 					$series_data = array(
 						'series_id'=>$row['Series'],
@@ -162,7 +164,7 @@ class Ajax extends CI_Controller {
                         'interval'=>$row['Interval'],
 						'table_speed'=>$row['Table Speed (mm/rotation)'],
                         'pitch'=>$row['Pitch'],
-						'kvp'=>($row['kVp']==null)?NULL:$row['kVp'],						
+						'kvp'=>$row['kVp'],						
                         'am'=>$row['mA'],
 						'noise_reduction'=>$row['Noise Reduction'],
                         'rotation_time'=>$row['Rotation Time'],
@@ -173,8 +175,17 @@ class Ajax extends CI_Controller {
                         'notes'=>$row['Notes'],
 						'protocol_number'=>$row['Protocol ID']
                     );
-                    $this->series_ct_model->insert_new($series_data,$row['Series']);
-				}					
+                    $series_status=$this->series_ct_model->insert_new($series_data,$row['Series']);
+				}	
+				
+				$status=1;
+				if($protocol_status==0){
+					$status=0;
+				}else if ($protocol_status==2 && $series_status==2){
+					$status=2;
+				};
+				//$status=$series_status;
+				array_push($imported_protocols[1], $status);
 			}
 			//$this->session->set_flashdata('success', 'Csv Data Imported Succesfully');
 			echo json_encode($imported_protocols);

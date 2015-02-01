@@ -81,16 +81,31 @@ class protocol_model extends CI_Model{
 	function insert_new($data,$id){
 		$sql = 'SELECT * FROM protocol WHERE protocol_number=?';
 		$params = array($id);
-		
+		$status = 0;//0: new protocol; 1: modified; 2:no change
         $query = $this->db->query($sql, $params);
-        if ($query->num_rows() > 0) {			
-			$this->db->insert('protocol_backup',$query->result_array()[0]);
-			$this->db->where('protocol_number', $id);
-			$this->db->update('protocol', $data);        
+        if ($query->num_rows() > 0) {
+			$status=2;
+			$arrayobject = new ArrayObject($data);
+
+			for($iterator = $arrayobject->getIterator();
+				$iterator->valid();
+				$iterator->next()) {
+				if ($iterator->current()!=$query->result_array()[0][$iterator->key()]){
+					$status=1;
+					break;
+				}
+			}
+			
+			if ($status==1){
+				$this->db->insert('protocol_backup',$query->result_array()[0]);
+				$this->db->where('protocol_number', $id);
+				$this->db->update('protocol', $data);  
+			}					
         }
         else {            
-			$this->db->insert('protocol', $data);
+			$this->db->insert('protocol', $data);			
         }		
+		return $status;
 	}	
 	
 	function delete_by_number($protocol_number){
@@ -99,31 +114,5 @@ class protocol_model extends CI_Model{
 		
         $query = $this->db->query($sql, $params);
 	}
-	/*function get_thumb_by_upload_id($upload_id)
-	{
-		$sql = 'SELECT thumbimg_dir FROM upload WHERE upload_id=?';
-        $query = $this->db->query($sql, $upload_id);
-        if ($query->num_rows() > 0) {			
-			return $query->row()->thumbimg_dir;            
-        }
-        else {
-            return null;
-        }
-	}
-	function get_id($user_id) {
-        $sql = 'SELECT upload_id FROM upload WHERE user_id=? order by dining_time desc LIMIT 1';
-        $query = $this->db->query($sql, $user_id);
-        if ($query->num_rows() > 0) {
-            return $query->row()->upload_id;
-        }
-        else {
-            return null;
-        }
-    }
-	function upload_url($upload_id,$full_image_dir,$small_image_dir){
-		$sql = 'UPDATE upload SET img_dir=? WHERE upload_id=?';		
-        $this->db->query($sql, array($full_image_dir,$upload_id));
-		$sql = 'UPDATE upload SET thumbimg_dir=? WHERE upload_id=?';		
-        $this->db->query($sql, array($small_image_dir,$upload_id));		
-	}*/
+	
 }

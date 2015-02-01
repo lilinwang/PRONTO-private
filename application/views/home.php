@@ -56,7 +56,9 @@
         width: 250,
 		autoOpen: false,		
 	}
-	
+	function sentNotification(e){
+		$(e).prop('disabled', true);
+	}
 	function upload(){						
 		var file_data = $("#userfile").prop("files")[0];   		
 		var fileName = $("#userfile").val();
@@ -84,12 +86,15 @@
 					setTimeout(function() { dialog.dialog("close"); }, 1000);
 					//alert(response.length);
 					//$('#import-result').html(response.length);
-					$('#import-result').append("Imported protocols:<ul>");
-					for (var i=0;i<response.length;i++){
-						$('#import-result').append("<li>"+response[i]+"</li>");
-					}
-					$('#import-result').append("</ul>");
-					//<p id='result'></p>
+					$('#import-result').html("<h3>Imported protocols:</h3></br>");
+					var status=["New protocol","Modified","No change"];
+					for (var i=0;i<response[0].length;i++){							
+						if (response[1][i]!=2){
+							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-sm-2'>"+status[response[1][i]]+"</label><button class='btn btn-primary btn-sm' onclick='sentNotification(this)'>Send Notification</button></div>");
+						}else{
+							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-sm-2'>"+status[response[1][i]]+"</label></div>");						
+						}
+					}					
                 }
 			});				            			     	
 		}else{
@@ -460,7 +465,7 @@
                                 </span>
 							</span>
                         </div>									
-						<p id='import-result'></p>
+						<div id='import-result'></div>
 			</div>
 			
 			
