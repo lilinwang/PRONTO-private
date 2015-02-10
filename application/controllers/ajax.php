@@ -195,11 +195,11 @@ class Ajax extends CI_Controller {
                     $series_status=$this->series_ct_model->insert_new($series_data,$row['Series']);
 				}	
 				//0: new protocol; 1: modified; 2:no change
-				$status="modified";
+				$status=1;
 				if($protocol_status==0){
-					$status="new protocol";
+					$status=0;
 				}else if ($protocol_status==2 && $series_status==2){
-					$status="no change";
+					$status=2;
 				};
 				//$status=$protocol_status."**".$series_status;
 				array_push($imported_protocols[2], $status);

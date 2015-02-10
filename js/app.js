@@ -1,6 +1,17 @@
 (function(){
-	var app = angular.module('radiology_protocol',[]);
+	var app = angular.module('radiology_protocol',['angularUtils.directives.dirPagination']);	
+	app.controller("OtherController",['$http','$scope',function($http,$scope){
+		$scope.pageChangeHandler = function(num) {
+			console.log('going to page ' + num);
+		};	
+	}]);
+	
 	app.controller("PanelController", ['$http','$scope',function($http,$scope){
+		$scope.currentPage = 1;
+		$scope.pageSize = 10;
+		$scope.pageChangeHandler = function(num) {
+			console.log('meals page changed to ' + num);
+		};
 		//var pdata=this;
 		$scope.search_key="";
 		$scope.protocols=[];
@@ -10,10 +21,8 @@
 		$scope.series=[];
 		$scope.sections=[
 			'Home',
-			//'Add protocol',
 			'Import',
-			'History'//,
-			//'API'			
+			'History'		
 		];
 		$scope.records=[];
 		$scope.history_start="";

@@ -12,7 +12,8 @@
     <title>Radiology Protocols</title>
 	
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">    		     
+    <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">    
+    <link href="css/plugins/dataTables.bootstrap.css" rel="stylesheet">	
 	<link href="font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<link href="css/sb-admin-2.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/jquery-ui.css">
@@ -33,9 +34,12 @@
     <script src="js/sb-admin-2.js"></script>	
 	<script src="js/bootbox.min.js"></script>	
 	<script type="text/javascript" src="js/angular.js"></script>
+	<script type="text/javascript" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+	<script src="js/dirPagination.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript">	
+	<script type="text/javascript">		   
+
 	var opt={				
 		height: 150,
         width: 250,
@@ -78,15 +82,16 @@
 					/*for (var i=0;i<response[0].length;i++){							
 						
 							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+response[2][i]+"</label><button class='btn btn-primary btn-sm' onclick='sentNotification(this)'>Send Notification</button></div>");						
-					}*/					
+					}*/
+					var status=["new protocol","modified","no change"];
 					for (var i=0;i<response[0].length;i++){							
-						if (response[1][i]!=2){
-							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+response[2][i]+"</label><button class='btn btn-primary btn-sm' onclick='sentNotification(this)'>Send Notification</button></div>");
+						if (response[2][i]!=2){
+							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+status[response[2][i]]+"</label><button class='btn btn-primary btn-sm' onclick='sentNotification(this)'>Send Notification</button></div>");
 						}
 					}	
 					for (var i=0;i<response[0].length;i++){							
-						if (response[1][i]==2){
-							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+response[2][i]+"</label></div>");
+						if (response[2][i]==2){
+							$('#import-result').append("<div class='form-group row'><label class='col-md-3 control-label'>"+response[0][i]+"</label><label class='col-md-3 control-label'>"+response[1][i]+"</label><label class='col-sm-2'>"+status[response[2][i]]+"</label></div>");
 						}
 					}
                 }
@@ -336,10 +341,25 @@
                         <div class="panel-heading">
                             DataTables Advanced Tables
                         </div>
+						<div class="form-group row" style="margin-top:15px;margin-left:15px;margin-bottom:-15px;">							
+							<div >
+								<div class="form-group row col-md-10" style="float:right;">
+									<label class="col-md-1 control-label">Search:</label>
+									<div class="col-md-3">
+										<input ng-model="q" type="text" class="form-control" placeholder="Filter text">
+									</div>
+									
+									<label class="col-md-2 control-label" >items per page:</label>
+									<div class="col-md-2">
+										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
+									</div>
+								</div>
+							</div>
+						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-protocol">
                                     <thead>
                                         <tr>
 											<th>protocol ID</th>
@@ -374,8 +394,13 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- /.table-responsive -->                           
+                            <!-- /.table-responsive -->  							
                         </div>
+						<div ng-controller="OtherController" >         
+							<div class="text-center">
+								<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
+							</div>
+						</div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -400,10 +425,25 @@
                         <div class="panel-heading">
                             Protocol
                         </div>
+						<div class="form-group row" style="margin-top:15px;margin-left:15px;margin-bottom:-15px;">							
+							<div >
+								<div class="form-group row col-md-10" style="float:right;">
+									<label class="col-md-1 control-label">Search:</label>
+									<div class="col-md-3">
+										<input ng-model="q" type="text" class="form-control" placeholder="Filter text">
+									</div>
+									
+									<label class="col-md-2 control-label" >items per page:</label>
+									<div class="col-md-2">
+										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
+									</div>
+								</div>
+							</div>
+						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive">
-								<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+								<table class="table table-striped table-bordered table-hover" id="dataTables-detailed">
                                     <thead>
                                         <tr>
 											<th>protocol ID</th>
@@ -440,6 +480,11 @@
 								 </div>
                             <!-- /.table-responsive -->                           
                         </div>
+						<div ng-controller="OtherController" >         
+							<div class="text-center">
+								<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
+							</div>
+						</div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -450,7 +495,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-series">
                                     <thead>
                                         <tr>
 											<th>Series</th>
@@ -551,10 +596,26 @@
                         <div class="panel-heading">
                             History of protocols
                         </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
+						<div class="form-group row" style="margin-top:15px;margin-left:15px;margin-bottom:-15px;">							
+							<div >
+								<div class="form-group row col-md-10" style="float:right;">
+									<label class="col-md-1 control-label">Search:</label>
+									<div class="col-md-3">
+										<input ng-model="q" type="text" class="form-control" placeholder="Filter text">
+									</div>
+									
+									<label class="col-md-2 control-label" >items per page:</label>
+									<div class="col-md-2">
+										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
+									</div>
+								</div>
+							</div>
+						</div>
+						
+			
+						<div class="panel-body">							
                             <div class="table-responsive">
-								<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+								<table class="table table-striped table-bordered table-hover" id="dataTables-history">
 									<thead>
                                         <tr>
 											<th>Status</th>
@@ -565,7 +626,7 @@
 										</tr>
 									</thead>
 									<tbody>										 																			
-                                        <tr class="odd gradeX" ng-repeat="record in records" >												
+                                        <tr class="odd gradeX" dir-paginate="record in records | filter:q | itemsPerPage: pageSize" current-page="currentPage" >												
 											<td>{{record.status}}</td>
                                             <td>{{record.protocol_number}}</td>											
                                             <td>{{record.protocol_name}}</td>
@@ -573,15 +634,22 @@
 											<td>{{record.created_at}}</td>                                                                                    							
                                         </tr>                                       
 									</tbody>
-								</table>
+								</table>								
+							</div>							
+						</div>
+						              
+						<div ng-controller="OtherController" >         
+							<div class="text-center">
+								<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</div>
 			
-						
+		</div>									
     </div>
     <!-- /#wrapper -->
 
