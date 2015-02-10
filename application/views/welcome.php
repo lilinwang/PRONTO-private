@@ -101,7 +101,6 @@
 	
     <script type="text/javascript">
         $(function() {
-// 登陆和注册的tab
             $("#sign-in-tab").click(function(){
                 $("#sign-in-form-outer").show();
                 $("#sign-up-form-outer").hide();

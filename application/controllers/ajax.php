@@ -6,13 +6,14 @@ class Ajax extends CI_Controller {
 		$this->load->model('series_ct_model');
 		$this->load->model('series_mr_model');
         $this->load->library('csvimport');
+		$this->load->library('session');
     }
 	
     function index()
     {
         exit('Access denied');
     }
-	public function add_protocol(){	
+	/*public function add_protocol(){	
 		$data = json_decode(file_get_contents("php://input"));
 		$this->load->model('protocol_model');	
 		$protocol_data = array(
@@ -61,7 +62,16 @@ class Ajax extends CI_Controller {
 		
 		echo json_encode($result);			
 	}
-	
+	*/
+	function get_record(){
+		$data = json_decode(file_get_contents("php://input"));
+		
+		$time_start = mysql_real_escape_string($data->time_start);
+		$time_end = mysql_real_escape_string($data->time_end);			
+		$this->load->model('record_model');				
+		$result= $this->record_model->get_list_by_range($time_start,$time_end);
+		echo json_encode($result);	
+	}
 	function get_protocol(){	
 		$data = json_decode(file_get_contents("php://input"));
 		
@@ -97,11 +107,14 @@ class Ajax extends CI_Controller {
 		$config['allowed_types'] = 'csv';
 		if ( 0 < $_FILES['file']['error'] ) {
 			echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+			return;
 		}
 		else {
 			$dest='uploads/'.$_FILES['file']['name'];
 			move_uploaded_file($_FILES['file']['tmp_name'],$dest);							
 		}					
+		 
+		$user_name=$this->session->userdata('user_name');
 		 
         $file_path = $dest;
 		
@@ -109,7 +122,7 @@ class Ajax extends CI_Controller {
 		
         if ($this->csvimport->get_array($file_path)) {
 			$csv_array = $this->csvimport->get_array($file_path);
-			$imported_protocols=array(array(),array());
+			$imported_protocols=array(array(),array(),array());
 			//$imported_status=array();
 			foreach ($csv_array as $row) {	
 				$protocol_data = array(
@@ -123,12 +136,14 @@ class Ajax extends CI_Controller {
                         'bodypart_full'=>$row['BodyPart Full'],
 						'approval_date'=>($row['Approval Date']==null)?NULL:$row['Approval Date'],
                         'golive_date'=>($row['Go-Live Date']==null)?NULL:$row['Go-Live Date'],
-                        'approved_by'=>$row['Approved by']                        
+                        'approved_by'=>$row['Approved by'],                        
+						'report'=>$row['Report Template'] 
                 );					
 				if ($row['Protocol ID']==NULL) break;	
 				
-				$protocol_status=$this->protocol_model->insert_new($protocol_data,$row['Protocol ID']);
-				array_push($imported_protocols[0], $row['Protocol ID'].".".$row['Protocol Name']);                			                
+				$protocol_status=$this->protocol_model->insert_new($protocol_data,$row['Protocol ID'],$user_name);
+				array_push($imported_protocols[0], $row['Protocol ID']);   
+				array_push($imported_protocols[1], $row['Protocol Name']);				
 				
 				$series_status;
 				if (strtoupper($protocol_data['modality'])==='MR'){
@@ -149,17 +164,18 @@ class Ajax extends CI_Controller {
                     $series_status=$this->series_mr_model->insert_new($series_data,$row['Series']);
 				}else{
 					$series_data = array(
-						'series_id'=>$row['Series'],
+						'series_name'=>$row['Series'],
                         'indication'=>$row['Indications'],
                         'patient_orientation'=>$row['Patient Orientation'],
                         'landmark'=>$row['Landmark'],
                         'intravenous_contrast'=>$row['Intravenous Contrast'],
+						'oral_contrast'=>$row['Oral Contrast'],
 						'scout'=>$row['Scout'],
                         'scanning_mode'=>$row['Scanning Mode'],
                         'range_direction'=>$row['Range/Direction'],
                         'gantry_angle'=>$row['Gantry Angle'],
 						'algorithm'=>$row['Algorithm'],
-                        'collimation'=>$row['Collimation'],
+                        'beam_collimation_detector_configuration'=>$row['Beam Collimation / Detector Configuration'],
                         'slice_thickness'=>$row['Slice Thickness'],
                         'interval'=>$row['Interval'],
 						'table_speed'=>$row['Table Speed (mm/rotation)'],
@@ -170,6 +186,7 @@ class Ajax extends CI_Controller {
                         'rotation_time'=>$row['Rotation Time'],
                         'scan_fov'=>$row['Scan FOV'],
 						'display_fov'=>$row['Display FOV'],
+						'scan_delay'=>$row['Scan Delay'],						 
                         'post_processing'=>$row['Post Processing'],
 						'transfer_images'=>$row['Transfer Images'],
                         'notes'=>$row['Notes'],
@@ -177,15 +194,15 @@ class Ajax extends CI_Controller {
                     );
                     $series_status=$this->series_ct_model->insert_new($series_data,$row['Series']);
 				}	
-				
-				$status=1;
+				//0: new protocol; 1: modified; 2:no change
+				$status="modified";
 				if($protocol_status==0){
-					$status=0;
+					$status="new protocol";
 				}else if ($protocol_status==2 && $series_status==2){
-					$status=2;
+					$status="no change";
 				};
-				//$status=$series_status;
-				array_push($imported_protocols[1], $status);
+				//$status=$protocol_status."**".$series_status;
+				array_push($imported_protocols[2], $status);
 			}
 			//$this->session->set_flashdata('success', 'Csv Data Imported Succesfully');
 			echo json_encode($imported_protocols);

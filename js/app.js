@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module('store',[]);
+	var app = angular.module('radiology_protocol',[]);
 	app.controller("PanelController", ['$http','$scope',function($http,$scope){
 		//var pdata=this;
 		$scope.search_key="";
@@ -12,9 +12,13 @@
 			'Home',
 			//'Add protocol',
 			'Import',
-			'Advanced Search'//,
+			'History'//,
 			//'API'			
 		];
+		$scope.records=[];
+		$scope.history_start="";
+		$scope.history_end="";
+		
 		this.tab='Home';
 		this.selectprotocols=function(modal,bodypart){
 			//console.log(bodypart);
@@ -39,6 +43,26 @@
 				console.log(data);				
 			});
 		};	
+		this.showHistory=function(){
+			//console.log($scope.history_start);
+			//console.log($scope.history_end);
+			$http({
+				url: 'ajax/get_record',
+				method: "POST",
+				data : {time_start:$scope.history_start,time_end:$scope.history_end}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.records=data.slice(0);
+				}
+				else{
+					//console.log(data);
+					$scope.records=[];
+				}				
+			}).error(function (data) {
+				console.log(data);				
+			});
+		}
 		this.showDetailedProtocol=function(protocol_number,modality,bodypart){
 			//console.log(protocol_number);
 			this.tab='DetailedProtocol';	
@@ -99,8 +123,36 @@
 		this.isSelected=function(selectTab){
 			return this.tab===selectTab;
 		};
-		this.select=function(setTab){
+		this.select=function(setTab){			
 			this.tab=setTab;
+			if (setTab=='History'){
+				var today=new Date();				
+				var dd = today.getDate();
+				var mm = today.getMonth()+1; //January is 0!
+
+				var yyyy = today.getFullYear();
+				
+				var start_m=mm-6;
+				var start_y;
+				if (start_m<0){
+					start_m=mm+6;
+					start_y=yyyy-1;
+				}
+				
+				if(dd<10){
+					dd='0'+dd
+				} 
+				if(mm<10){
+					mm='0'+mm
+				} 
+				if (start_m<10){
+					start_m='0'+start_m
+				}
+				
+				$scope.history_start=start_y+'-'+start_m+'-'+dd;			
+				$scope.history_end=yyyy+'-'+mm+'-'+dd;
+				this.showHistory();
+			}
 		};	
 		this.deleteprotocol=function(){			
 			var contro=$(this);			

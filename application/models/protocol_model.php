@@ -4,6 +4,13 @@ class protocol_model extends CI_Model{
 	function __construct(){
 		parent::__construct();
 	}
+	private function record($protocol_number,$protocol_name,$user_name,$status){
+		$sql='INSERT INTO record (`protocol_number`, `protocol_name`, `created_by`, `status`) VALUES (?,?,?,?);';
+		//0: new protocol; 1: modified; 2:no change
+		$new_status=["New protocol","Modified","No change"];
+		$params = array($protocol_number,$protocol_name,$user_name,$new_status[$status]);
+		$query = $this->db->query($sql, $params);
+	}
 	
 	function get_list_by_bodypart($bodypart_full,$modality)
 	{
@@ -78,10 +85,10 @@ class protocol_model extends CI_Model{
             return null;
         }
 	}
-	function insert_new($data,$id){
+	function insert_new($data,$id,$user_name){
 		$sql = 'SELECT * FROM protocol WHERE protocol_number=?';
 		$params = array($id);
-		$status = 0;//0: new protocol; 1: modified; 2:no change
+		$status = 0;//0: new protocol; 1: modified; 2:no change; 3:delete
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
 			$status=2;
@@ -96,23 +103,34 @@ class protocol_model extends CI_Model{
 				}
 			}
 			
-			if ($status==1){
+			if ($status==1){				
 				$this->db->insert('protocol_backup',$query->result_array()[0]);
 				$this->db->where('protocol_number', $id);
 				$this->db->update('protocol', $data);  
 			}					
         }
         else {            
-			$this->db->insert('protocol', $data);			
+			$this->db->insert('protocol', $data);	
+			
         }		
+		
+		$this->record($id,$data['protocol_name'],$user_name,$status);
 		return $status;
 	}	
 	
-	function delete_by_number($protocol_number){
+	function delete_by_number($protocol_number,$user_name){
+		$sql = 'SELECT * FROM protocol WHERE protocol_number=?';
+		$params = array($protocol_number);
+		$query = $this->db->query($sql, $params);
+        if ($query->num_rows() > 0) {
+			$this->db->insert('protocol_backup',$query->result_array()[0]);//backup
+			$this->record($protocol_number,$query->result_array()[0]['protocol_name'],$user_name,3);//record
+		}
+		
 		$sql = 'DELETE FROM protocol WHERE protocol_number=?';
 		$params = array($protocol_number);
 		
         $query = $this->db->query($sql, $params);
-	}
+	}	
 	
 }

@@ -6,7 +6,7 @@ class series_ct_model extends CI_Model{
 	}	
 	
 	function insert_new($data,$id){
-		$sql = 'SELECT * FROM series_ct WHERE series_id=?';
+		$sql = 'SELECT * FROM series_ct WHERE series_name=?';
 		$params = array($id);
 		$status = 0;//0: new protocol; 1: modified; 2:no change
 		
@@ -19,13 +19,13 @@ class series_ct_model extends CI_Model{
 				$iterator->valid();
 				$iterator->next()) {
 				if ($iterator->current()!=$query->result_array()[0][$iterator->key()]){
-					$status=1;
+					$status=1;//$iterator->current()."***".$query->result_array()[0][$iterator->key()];
 					break;
 				}
 			}
 			if ($status==1){				   
 				$this->db->insert('series_ct_backup',$query->result_array()[0]);
-				$this->db->where('series_id', $id);
+				$this->db->where('series_name', $id);
 				$this->db->update('series_ct', $data);        
 			}
         }

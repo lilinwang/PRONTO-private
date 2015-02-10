@@ -6,6 +6,7 @@ class Detailed_ajax extends CI_Controller {
 		$this->load->model('series_ct_model');
 		$this->load->model('series_mr_model');
         $this->load->library('csvimport');
+		$this->load->library('session');
     }
 	
     function index()
@@ -34,11 +35,12 @@ class Detailed_ajax extends CI_Controller {
 	function delete(){
 		$data = json_decode(file_get_contents("php://input"));
 		
+		$user_name=$this->session->userdata('user_name');
 		$protocol_number = mysql_real_escape_string($data->number);					
 		$password = mysql_real_escape_string($data->password);	
 		if ($password=="cornellradiology"){
 			$this->load->model('protocol_model');				
-			$this->protocol_model->delete_by_number($protocol_number);							
+			$this->protocol_model->delete_by_number($protocol_number,$user_name);							
 		
 			$this->load->model('series_ct_model');				
 			$this->series_ct_model->delete_by_number($protocol_number);							
