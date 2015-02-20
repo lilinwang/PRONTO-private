@@ -597,6 +597,7 @@
 									<div class="col-md-2">
 										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
 									</div>
+									<button class="btn btn-default"  type="button" ng-click="panel.showAllHistory()">Show All History</button>
 								</div>
 							</div>
 						</div>

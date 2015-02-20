@@ -72,6 +72,15 @@ class Ajax extends CI_Controller {
 		$result= $this->record_model->get_list_by_range($time_start,$time_end);
 		echo json_encode($result);	
 	}
+	function get_all_record(){
+		$data = json_decode(file_get_contents("php://input"));
+		
+		$time_start = mysql_real_escape_string($data->time_start);
+		$time_end = mysql_real_escape_string($data->time_end);			
+		$this->load->model('record_model');				
+		$result= $this->record_model->get_all_list_by_range($time_start,$time_end);
+		echo json_encode($result);	
+	}
 	function get_protocol(){	
 		$data = json_decode(file_get_contents("php://input"));
 		

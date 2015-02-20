@@ -11,7 +11,7 @@ class record_model extends CI_Model{
 		$date->modify('+1 day');		
 		$time_end=$date->format('Y-m-d');
 		
-		$sql = 'SELECT * FROM record WHERE created_at > ? AND created_at < ?';
+		$sql = 'SELECT * FROM record WHERE status!="No change" AND created_at > ? AND created_at < ? ORDER BY created_at DESC';
 		$params = array($time_start,$time_end);
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
@@ -21,5 +21,22 @@ class record_model extends CI_Model{
         else {
             return null;
         }
-	}		
+	}	
+	function get_all_list_by_range($time_start,$time_end)
+	{
+		$date = DateTime::createFromFormat('Y-m-d', $time_end);
+		$date->modify('+1 day');		
+		$time_end=$date->format('Y-m-d');
+		
+		$sql = 'SELECT * FROM record WHERE created_at > ? AND created_at < ? ORDER BY created_at DESC';
+		$params = array($time_start,$time_end);
+        $query = $this->db->query($sql, $params);
+        if ($query->num_rows() > 0) {
+			$result=$query->result_array();
+			return $result;            
+        }
+        else {
+            return null;
+        }
+	}	
 }

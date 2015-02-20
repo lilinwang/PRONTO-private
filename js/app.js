@@ -55,6 +55,7 @@
 		this.showSeries=function(serie){
 			serie.show=!serie.show;
 		}
+		
 		this.showHistory=function(){
 			//console.log($scope.history_start);
 			//console.log($scope.history_end);
@@ -65,7 +66,25 @@
 			}).success(function (data) {
 				//console.log(data);
 				if (angular.isObject(data)){					
-					$scope.records=data.slice(0);
+					$scope.records=data.slice(0);										
+				}
+				else{
+					//console.log(data);
+					$scope.records=[];
+				}				
+			}).error(function (data) {
+				console.log(data);				
+			});
+		}
+		this.showAllHistory=function(){			
+			$http({
+				url: 'ajax/get_all_record',
+				method: "POST",
+				data : {time_start:$scope.history_start,time_end:$scope.history_end}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.records=data.slice(0);										
 				}
 				else{
 					//console.log(data);
