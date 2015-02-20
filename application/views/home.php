@@ -18,6 +18,7 @@
 	<link href="css/sb-admin-2.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/jquery-ui.css">
 	<link rel="stylesheet" href="css/datepicker.css">
+	<link href="css/style.css" rel="stylesheet">
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -367,12 +368,13 @@
                                             <th>Code</th>
                                             <th>Description</th>
 											<th>Modality</th>
+											<th>Indication</th>
                                             <th>General Body Part</th>
 											<th>Body Part Code</th>
                                             <th>Detailed Body Part</th>
                                             <th>Approval date</th>
                                             <th>Golive date</th>
-                                            <th>Approved by</th>																				
+                                            <th>Approved by</th>																															
 										</tr>
                                     </thead>
                                     <tbody>										 																			
@@ -384,6 +386,7 @@
                                             <td>{{protocol.code}}</td>
                                             <td>{{protocol.description}}</td>
 											<td>{{protocol.modality}}</td>
+											<td>{{protocol.indication}}</td>
                                             <td class="center">{{protocol.bodypart}}</td>
                                             <td class="center">{{protocol.bodypart_code}}</td>
 											<td>{{protocol.bodypart_full}}</td>
@@ -451,6 +454,7 @@
                                             <th>Code</th>
                                             <th>Description</th>
 											<th>Modality</th>
+											<th>Indication</th>
                                             <th>General Body Part</th>
 											<th>Body Part Code</th>
                                             <th>Detailed Body Part</th>
@@ -468,6 +472,7 @@
                                             <td>{{protocol.code}}</td>
                                             <td>{{protocol.description}}</td>
 											<td>{{protocol.modality}}</td>
+											<td>{{protocol.indication}}</td>
                                             <td class="center">{{protocol.bodypart}}</td>
                                             <td class="center">{{protocol.bodypart_code}}</td>
 											<td>{{protocol.bodypart_full}}</td>
@@ -477,7 +482,7 @@
                                         </tr>                                       
                                     </tbody>
                                 </table>
-								 </div>
+								</div>
                             <!-- /.table-responsive -->                           
                         </div>
 						<div ng-controller="OtherController" >         
@@ -487,79 +492,63 @@
 						</div>
                         <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
-					<div class="panel panel-default">
-                        <div class="panel-heading">
-                            Series of Protocol
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-series">
-                                    <thead>
-                                        <tr>
-											<th>Series</th>
-                                            <th>Indication</th>
-                                            <th>Patient Orientation</th>
-                                            <th>Landmark</th>
-											<th>Intravenous Contrast</th>
-                                            <th>Scout</th>
-											<th>Scanning Mode</th>
-                                            <th>Range/Direction</th>
-                                            <th>Gantry Angle</th>
-                                            <th>Algorithm</th>
-                                            <th>Collimation</th>
-											<th>Slice Thickness</th>
-                                            <th>Interval</th>	
-											<th>Table Speed (mm/rotation)</th>
-                                            <th>Pitch</th>	
-											<th>kVp</th>
-                                            <th>mA</th>	
-											<th>Noise Reduction</th>
-											<th>Rotation Time</th>
-                                            <th>Scan FOV</th>
-                                            <th>Display FOV</th>
-                                            <th>Post Processing</th>
-                                            <th>Transfer Images</th>
-                                            <th>Notes</th>                                            										
-										</tr>
-                                    </thead>
-                                    <tbody>										 																			
-                                        <tr class="odd gradeX" ng-repeat="serie in series">										
-											<td>{{serie.series_name}}</td>
-                                            <td>{{serie.indication}}</td>											
-                                            <td>{{serie.patient_orientation}}</td>
-                                            <td>{{serie.landmark}}</td>
-											<td>{{serie.intravenous_contrast}}</td>
-                                            <td class="center">{{serie.scout}}</td>
-                                            <td class="center">{{serie.scanning_mode}}</td>
-											<td>{{serie.range_direction}}</td>
-                                            <td>{{serie.gantry_angle}}</td>
-                                            <td>{{serie.algorithm}}</td>
-											<td>{{serie.collimation}}</td>    
-											<td>{{serie.slice_thickness}}</td>
-                                            <td>{{serie.interval}}</td>
-                                            <td>{{serie.table_speed}}</td>
-											<td>{{serie.pitch}}</td>  
-											<td>{{serie.kvp}}</td>
-                                            <td>{{serie.am}}</td>
-											<td>{{serie.noise_reduction}}</td>
-                                            <td>{{serie.rotation_time}}</td>
-											<td>{{serie.scan_fov}}</td>  
-											<td>{{serie.display_fov}}</td>
-                                            <td>{{serie.post_processing}}</td>
-                                            <td>{{serie.transfer_images}}</td>
-											<td>{{serie.notes}}</td>  											                                                                  								
-                                        </tr>                                       
-                                    </tbody>
-                                </table>
-								
-                            </div>
-                            <!-- /.table-responsive -->                           
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
+                    
+						
+					<div class="panel-body">					
+						<h4>Series of Protocol</h4>
+							<ul class="nav" >                                                                                            									 
+								<li ng-repeat="serie in series">
+									<a ng-click="panel.showSeries(serie)"> {{serie.series_name}}<span class="fa arrow"></span></a>									
+									<ul class="nav series" ng-show="serie.show" >																				                                                                                                                                                                                                                                                                    
+										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>
+										
+										<li><h4>Landmark</h4>{{serie.landmark}}</li>
+                                        										
+										<li><h4>Intravenous Contrast</h4>{{serie.intravenous_contrast}}</li>
+										
+										<li><h4>Scout</h4>{{serie.scout}}</li>
+										
+										<li><h4>Scanning Mode</h4>{{serie.scanning_mode}}</li>
+										
+										<li><h4>Range/Direction</h4>{{serie.range_direction}}</li>
+										
+										<li><h4>Gantry Angle</h4>{{serie.gantry_angle}}</li>
+										
+										<li><h4>Algorithm</h4>{{serie.algorithm}}</li>
+										
+										<li><h4>Collimation</h4>{{serie.collimation}}</li>    
+										
+										<li><h4>Slice Thickness</h4>{{serie.slice_thickness}}</li>
+										
+										<li><h4>Interval</h4>{{serie.interval}}</li>
+										
+										<li><h4>Table Speed (mm/rotation)</h4>{{serie.table_speed}}</li>
+										
+										<li><h4>Pitch</h4>{{serie.pitch}}</li>  
+										
+										<li><h4>kVp</h4>{{serie.kvp}}</li>
+										
+										<li><h4>mA</h4>{{serie.am}}</li>
+										
+										<li><h4>Noise Reduction</h4>{{serie.noise_reduction}}</li>
+										
+										<li><h4>Rotation Time</h4>{{serie.rotation_time}}</li>
+										
+										<li><h4>Scan FOV</h4>{{serie.scan_fov}}</li>  
+										
+										<li><h4>Display FOV</h4>{{serie.display_fov}}</li>
+										
+										<li><h4>Post Processing</h4>{{serie.post_processing}}</li>
+										
+										<li><h4>Transfer Images</h4>{{serie.transfer_images}}</li>
+										
+										<li><h4>Notes</h4>{{serie.notes}}</li>  
+									</ul>
+                            <!-- /.nav-second-level -->
+								</li>
+							</ul>
+					</div>
+					<!--/.panel-body-->                   
                 </div>
                 <!-- /.col-lg-12 -->
 			</div>

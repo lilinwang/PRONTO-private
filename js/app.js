@@ -51,7 +51,10 @@
 			}).error(function (data) {
 				console.log(data);				
 			});
-		};	
+		};
+		this.showSeries=function(serie){
+			serie.show=!serie.show;
+		}
 		this.showHistory=function(){
 			//console.log($scope.history_start);
 			//console.log($scope.history_end);
@@ -104,6 +107,11 @@
 				//console.log(data);
 				if (angular.isObject(data)){					
 					$scope.series=data.slice(0);
+					//console.log($scope.series);
+					for (i = 0; i < $scope.series.length; i++) { 
+						$scope.series[i].show=false;
+					}
+					//console.log($scope.series);
 				}
 				else{
 					//console.log(data);

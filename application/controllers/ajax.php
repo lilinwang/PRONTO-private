@@ -137,7 +137,8 @@ class Ajax extends CI_Controller {
 						'approval_date'=>($row['Approval Date']==null)?NULL:$row['Approval Date'],
                         'golive_date'=>($row['Go-Live Date']==null)?NULL:$row['Go-Live Date'],
                         'approved_by'=>$row['Approved by'],                        
-						'report'=>$row['Report Template'] 
+						'indication'=>$row['Indications'],
+						'report'=>$row['Report Template']
                 );					
 				if ($row['Protocol ID']==NULL) break;	
 				
@@ -164,8 +165,7 @@ class Ajax extends CI_Controller {
                     $series_status=$this->series_mr_model->insert_new($series_data,$row['Series']);
 				}else{
 					$series_data = array(
-						'series_name'=>$row['Series'],
-                        'indication'=>$row['Indications'],
+						'series_name'=>$row['Series'],                        
                         'patient_orientation'=>$row['Patient Orientation'],
                         'landmark'=>$row['Landmark'],
                         'intravenous_contrast'=>$row['Intravenous Contrast'],
