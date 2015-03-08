@@ -13,6 +13,8 @@
 			console.log('meals page changed to ' + num);
 		};
 		//var pdata=this;
+		$scope.all_series_button="Show All Series";
+		$scope.all_history_button="Show All History";
 		$scope.search_key="";
 		$scope.protocols=[];
 		$scope.detail_protocol="";
@@ -52,13 +54,26 @@
 				console.log(data);				
 			});
 		};
+		this.showAllSeries=function(){
+			if ($scope.all_series_button=="Show All Series"){
+				$scope.all_series_button="Hide All Series";
+				for (i = 0; i < $scope.series.length; i++) { 
+					$scope.series[i].show=true;
+				}			
+			} else {
+				$scope.all_series_button="Show All Series";
+				for (i = 0; i < $scope.series.length; i++) { 
+					$scope.series[i].show=false;
+				}	
+			}
+		}
 		this.showSeries=function(serie){
 			serie.show=!serie.show;
 		}
 		
 		this.showHistory=function(){
 			//console.log($scope.history_start);
-			//console.log($scope.history_end);
+			//console.log($scope.history_end);						
 			$http({
 				url: 'ajax/get_record',
 				method: "POST",
@@ -76,23 +91,29 @@
 				console.log(data);				
 			});
 		}
-		this.showAllHistory=function(){			
-			$http({
-				url: 'ajax/get_all_record',
-				method: "POST",
-				data : {time_start:$scope.history_start,time_end:$scope.history_end}
-			}).success(function (data) {
-				//console.log(data);
-				if (angular.isObject(data)){					
-					$scope.records=data.slice(0);										
-				}
-				else{
+		this.showAllHistory=function(){		
+			if ($scope.all_history_button=="Show All History"){
+				$scope.all_history_button="Show New/Modified History";
+				$http({
+					url: 'ajax/get_all_record',
+					method: "POST",
+					data : {time_start:$scope.history_start,time_end:$scope.history_end}
+				}).success(function (data) {
 					//console.log(data);
-					$scope.records=[];
-				}				
-			}).error(function (data) {
-				console.log(data);				
-			});
+					if (angular.isObject(data)){					
+						$scope.records=data.slice(0);										
+					}
+					else{
+						//console.log(data);
+						$scope.records=[];
+					}				
+				}).error(function (data) {
+					console.log(data);				
+				});			
+			} else {
+				$scope.all_history_button="Show All History";
+				this.showHistory();
+			}			
 		}
 		this.showDetailedProtocol=function(protocol_number,modality,bodypart){
 			//console.log(protocol_number);

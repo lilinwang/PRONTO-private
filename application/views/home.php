@@ -495,10 +495,14 @@
                     
 						
 					<div class="panel-body">					
-						<h4>Series of Protocol</h4>
+						<p style="font-size:20px">Series
+							<span class="btn btn-default" ng-click="panel.showAllSeries(this)" type="button">
+								{{all_series_button}}
+							</span>
+						<p>
 							<ul class="nav" >                                                                                            									 
 								<li ng-repeat="serie in series">
-									<a ng-click="panel.showSeries(serie)"> {{serie.series_name}}<span class="fa arrow"></span></a>									
+									<a style="font-size:18px" ng-click="panel.showSeries(serie)"> {{serie.series_name}}<span class="fa arrow"></span></a>									
 									<ul class="nav series" ng-show="serie.show" >																				                                                                                                                                                                                                                                                                    
 										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>
 										
@@ -597,7 +601,7 @@
 									<div class="col-md-2">
 										<input type="number" min="1" max="100" type="text" class="form-control" ng-model="pageSize">
 									</div>
-									<button class="btn btn-default"  type="button" ng-click="panel.showAllHistory()">Show All History</button>
+									<button class="btn btn-default"  type="button" ng-click="panel.showAllHistory()">{{all_history_button}}</button>
 								</div>
 							</div>
 						</div>
