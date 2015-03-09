@@ -440,28 +440,28 @@
 				<p>Neuro MR </p>			
 				<div class="checkbox exportbox">
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.head"> Head
+						<input type="checkbox" ng-model="export_mr_options.head"> Head
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.neck"> Neck
+						<input type="checkbox" ng-model="export_mr_options.neck"> Neck
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.cervical_spine"> Cervical Spine
+						<input type="checkbox" ng-model="export_mr_options.cervical_spine"> Cervical Spine
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Thoracic Spine
+						<input type="checkbox" ng-model="export_mr_options.thoracic_spine"> Thoracic Spine
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Lumbar Spine
+						<input type="checkbox" ng-model="export_mr_options.lumbar_spine"> Lumbar Spine
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> CTL Spine
+						<input type="checkbox" ng-model="export_mr_options.ctl_spine"> CTL Spine
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Variable
+						<input type="checkbox" ng-model="export_mr_options.variable"> Variable
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Others
+						<input type="checkbox" ng-model="export_mr_options.others"> Others
 					</label>
 				</div>	
 				
@@ -649,7 +649,7 @@
 							<ul class="nav" >                                                                                            									 
 								<li ng-repeat="serie in series">
 									<a style="font-size:18px" ng-click="panel.showSeries(serie)"> {{serie.series_name}}<span class="fa arrow"></span></a>									
-									<ul class="nav series" ng-show="serie.show" >																				                                                                                                                                                                                                                                                                    
+									<ul class="nav series" ng-show="serie.show && detail_protocol_modality=='CT'" >																				                                                                                                                                                                                                                                                                    
 										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>
 										
 										<li><h4>Landmark</h4>{{serie.landmark}}</li>
@@ -693,6 +693,25 @@
 										<li><h4>Transfer Images</h4>{{serie.transfer_images}}</li>
 										
 										<li><h4>Notes</h4>{{serie.notes}}</li>  
+									</ul>
+									<ul class="nav series" ng-show="serie.show && detail_protocol_modality=='MR'" >																				                                                                                                                                                                                                                                                                    
+										<li><h4>Pulse Sequence</h4>{{serie.pulse_sequence}}</li>
+										
+										<li><h4>Plane</h4>{{serie.plane}}</li>
+                                        										
+										<li><h4>Imaging Mode</h4>{{serie.imaging_mode}}</li>
+										
+										<li><h4>Sequence Description</h4>{{serie.sequence_description}}</li>
+										
+										<li><h4>Fov</h4>{{serie.fov}}</li>
+										
+										<li><h4>Matrix 1.5t</h4>{{serie.matrix_15t}}</li>
+										
+										<li><h4>Matrix 3t</h4>{{serie.matrix_3t}}</li>
+										
+										<li><h4>Thk/Space</h4>{{serie.thk_space}}</li>
+										
+										<li><h4>Time</h4>{{serie.time}}</li>    										
 									</ul>
                             <!-- /.nav-second-level -->
 								</li>

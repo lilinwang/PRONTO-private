@@ -96,21 +96,13 @@ class Ajax extends CI_Controller {
 		$data = json_decode(file_get_contents("php://input"));
 		
 		$modality = mysql_real_escape_string($data->modality);		
-		
+		//echo $modality;
 		$this->load->model('protocol_series_model');				
 		$result= $this->protocol_series_model->get_export($data->bodypart_full,$modality);		
 				
 		echo json_encode($result);				
 	}
-    function get_profile()
-	{
-		$this->load->model('user_model');
-		$data['company_id']=$this->user_model->get_id_by_name($_POST['company_name']);
-		$list= $this->user_model->get_focus_by_id($data['company_id']);
-		
-		$data['focus_list']=explode('|',substr($list,1,strlen($list)-2));
-		echo json_encode($data);
-	}		
+    
 	function search_protocol(){
 		$data = json_decode(file_get_contents("php://input"));
 		
@@ -167,18 +159,17 @@ class Ajax extends CI_Controller {
 				$series_status;
 				if (strtoupper($protocol_data['modality'])==='MR'){
 					$series_data = array(
-                        'firstname'=>$row['Protocol Name'],
-                        'lastname'=>$row['Protocol ID'],
-                        'phone'=>$row['Code'],
-                        'email'=>$row['Description'],
-						'firstname'=>$row['Modality'],
-                        'lastname'=>$row['BodyPart'],
-                        'phone'=>$row['BodyPart Code'],
-                        'email'=>$row['BodyPart Full'],
-						'firstname'=>$row['Approval Date'],
-                        'lastname'=>$row['Go-Live Date'],
-                        'phone'=>$row['Approved by'],
-                        'email'=>$row['Series']
+                        'series_name'=>$row['Series'],                        
+                        'pulse_sequence'=>$row['Pulse Sequence'],
+                        'plane'=>$row['Plane'],
+                        'imaging_mode'=>$row['Imaging Mode'],
+						'sequence_description'=>$row['Sequence Description'],
+						'fov'=>$row['FOV'],
+                        'matrix_15t'=>$row['MATRIX (1.5T)'],
+                        'matrix_3t'=>$row['MATRIX (3T)'],
+                        'thk_space'=>$row['THK/SPACE'],
+						'time'=>$row['Time'],                        
+						'protocol_number'=>$row['Protocol ID']
                     );
                     $series_status=$this->series_mr_model->insert_new($series_data,$row['Series']);
 				}else{

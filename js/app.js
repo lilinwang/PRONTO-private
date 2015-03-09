@@ -52,16 +52,34 @@
 			others:false,
 			heart:false
 		};
-		
+		$scope.export_mr_options={			
+			head:false,
+			neck:false,		
+			cervical_spine:false,
+			thoracic_spine:false,			
+			lumbar_spine:false,
+			ctl_cord:false,			
+			variable:false,			
+			others:false
+		};
 		$scope.export_protocols=[];	
 		$scope.export_data=function(modal){
 			var bodypart=[];
-			$scope.export_protocols=[];			
-			angular.forEach($scope.export_ct_options,function(value,key){
-				if (value){					
-					bodypart.push(key);	
-				}
-			});			
+			$scope.export_protocols=[];	
+			if (modal=="MR"){
+				angular.forEach($scope.export_mr_options,function(value,key){
+					if (value){					
+						bodypart.push(key);	
+					}
+				});	
+			}else{
+				angular.forEach($scope.export_ct_options,function(value,key){
+					if (value){					
+						bodypart.push(key);	
+					}
+				});			
+			}
+			//console.log(bodypart);
 			if (bodypart.length<1){
 				$("#dialog").html("<p>No data selected.</p>");
 				var theDialog = $("#dialog").dialog(opt);					
@@ -75,9 +93,33 @@
 				data : {modality:modal,bodypart_full:bodypart}
 			}).success(function (data) {
 				console.log(data);
+				/*var one_protocol=[];				
+				var len=$scope.series.length;
+				for (var i=0;i<len;i++){				
+					var tmp={};				
+					angular.extend(tmp, $scope.protocols[0],$scope.series[i], true);
+					delete tmp['id'];
+					delete tmp['show'];
+					one_protocol.push(tmp);
+				}*/								
+				
+				if (modal=="MR"){
+					for (var i=0;i<bodypart.length;i++){
+						$scope.export_mr_options[bodypart[i]]=false;
+					}								
+				}else{
+					for (var i=0;i<bodypart.length;i++){
+						$scope.export_ct_options[bodypart[i]]=false;
+					}	
+				}
+			
 				if (angular.isObject(data)){										
 					$scope.export_protocols=data.slice(0);						
+					for (var i=0;i<$scope.export_protocols.length;i++){
+						delete $scope.export_protocols[i]['id'];
+					}
 					alasql('SELECT * INTO CSV("export_protocols.csv",{headers:true}) FROM ?',[$scope.export_protocols]);
+					
 				}else{
 					$("#dialog").html("<p>No data exported. Try another one.</p>");
 					var theDialog = $("#dialog").dialog(opt);					
@@ -184,7 +226,7 @@
 				method: "POST",
 				data : {number:protocol_number}
 			}).success(function (data) {
-				//console.log(data);
+				console.log(data);
 				if (angular.isObject(data)){					
 					$scope.protocols=data.slice(0);
 				}
@@ -200,9 +242,9 @@
 			$http({
 				url: 'detailed_ajax/get_series',
 				method: "POST",
-				data : {number:protocol_number}
+				data : {number:protocol_number,modal:modality}
 			}).success(function (data) {
-				//console.log(data);
+				console.log(data);
 				if (angular.isObject(data)){					
 					$scope.series=data.slice(0);
 					//console.log($scope.series);
@@ -222,8 +264,8 @@
 		};
 		this.export_one_protocol=function(){
 			var one_protocol=[];	
-			console.log($scope.protocols);
-			console.log($scope.series);
+			//console.log($scope.protocols);
+			//console.log($scope.series);
 			var len=$scope.series.length;
 			for (var i=0;i<len;i++){				
 				var tmp={};
@@ -233,8 +275,8 @@
 				delete tmp['show'];
 				one_protocol.push(tmp);
 			}								
-			console.log(one_protocol);
-			alasql('SELECT * INTO CSV("export_protocols.csv",{headers:true}) FROM ?',[one_protocol]);				
+			//console.log(one_protocol);
+			alasql('SELECT * INTO CSV("export_one_protocol.csv",{headers:true}) FROM ?',[one_protocol]);				
 		};
 		this.searchprotocols=function(){
 			console.log($scope.search_key);
@@ -295,7 +337,7 @@
 						url: 'detailed_ajax/delete',
 						method: "POST",
 						data : {number:$scope.detail_protocol,
-								password:result}
+								password:result,modality:$scope.detail_protocol_modality}
 					}).success(function (data) {
 					console.log(data);
 						if (data==="1"){

@@ -6,14 +6,12 @@ class protocol_series_model extends CI_Model{
 	}
 	function get_export($bodypart_full,$modality)
 	{		
-		/*$this->db->select('*');
-		foreach ($bodypart as $body){
-			$this->db->where('bodypart_full LIKE',$body);
+		$sql;
+		if ($modality=="MR"){
+			$sql = 'SELECT * FROM protocol as p inner join series_mr as s on p.protocol_number=s.protocol_number WHERE modality LIKE ? AND (bodypart_full LIKE ? ';
+		}else{
+			$sql = 'SELECT * FROM protocol as p inner join series_ct as s on p.protocol_number=s.protocol_number WHERE modality LIKE ? AND (bodypart_full LIKE ? ';
 		}
-		$this->db->where_in('bodypart_full',$bodypart_full);
-		$this->db->where('modality LIKE',$modality);
-		$query=$this->db->get('protocol');*/
-		$sql = 'SELECT * FROM protocol WHERE modality LIKE ? AND (bodypart_full LIKE ? ';
 		
 		$count = count($bodypart_full);	
 		

@@ -7,7 +7,7 @@ class protocol_model extends CI_Model{
 	private function record($protocol_number,$protocol_name,$user_name,$status){
 		$sql='INSERT INTO record (`protocol_number`, `protocol_name`, `created_by`, `status`) VALUES (?,?,?,?);';
 		//0: new protocol; 1: modified; 2:no change
-		$new_status=["New protocol","Modified","No change"];
+		$new_status=["New protocol","Modified","No change","Deleted"];
 		$params = array($protocol_number,$protocol_name,$user_name,$new_status[$status]);
 		$query = $this->db->query($sql, $params);
 	}

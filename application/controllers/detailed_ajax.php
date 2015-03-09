@@ -27,9 +27,15 @@ class Detailed_ajax extends CI_Controller {
 		$data = json_decode(file_get_contents("php://input"));
 		
 		$protocol_number = mysql_real_escape_string($data->number);			
-		
-		$this->load->model('series_ct_model');				
-		$result= $this->series_ct_model->get_list_by_number($protocol_number);							
+		$modality=mysql_real_escape_string($data->modal);	
+		if ($modality=="MR"){
+			$this->load->model('series_mr_model');				
+			$result= $this->series_mr_model->get_list_by_number($protocol_number);	
+		}else{
+			$this->load->model('series_ct_model');				
+			$result= $this->series_ct_model->get_list_by_number($protocol_number);	
+		}
+								
 		echo json_encode($result);		
 	}
 	function delete(){
@@ -38,12 +44,18 @@ class Detailed_ajax extends CI_Controller {
 		$user_name=$this->session->userdata('user_name');
 		$protocol_number = mysql_real_escape_string($data->number);					
 		$password = mysql_real_escape_string($data->password);	
+		$modality=mysql_real_escape_string($data->modality);	
 		if ($password=="cornellradiology"){
 			$this->load->model('protocol_model');				
 			$this->protocol_model->delete_by_number($protocol_number,$user_name);							
-		
-			$this->load->model('series_ct_model');				
-			$this->series_ct_model->delete_by_number($protocol_number);							
+			if ($modality=="MR"){
+				$this->load->model('series_mr_model');				
+				$this->series_mr_model->delete_by_number($protocol_number);	
+			}else{
+				$this->load->model('series_ct_model');				
+				$this->series_ct_model->delete_by_number($protocol_number);	
+			}
+									
 		
 			echo 1;
 		}else{
