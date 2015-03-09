@@ -24,12 +24,71 @@
 		$scope.sections=[
 			'Home',
 			'Import',
+			'Export',
 			'History'		
 		];
 		$scope.records=[];
 		$scope.history_start="";
 		$scope.history_end="";
+		$scope.export_ct_options={
+			neuro_ct:false,
+			head:false,
+			neck:false,		
+			cervical_spine:false,
+			thoracic_spine:false,			
+			lumbar_spine:false,
+			lumbar_spine_cord:false,
+			brachial_plexus:false,
+			facial_bones:false,
+			ankle:false,
+			foot:false,
+			shoulder:false,
+			wrist:false,
+			hand:false,
+			pelvis:false,
+			hip:false,
+			knee:false,
+			variable:false,
+			abdomen_pelvis:false,
+			others:false,
+			heart:false
+		};
 		
+		$scope.export_protocols=[];	
+		$scope.export_data=function(modal){
+			var bodypart=[];
+			$scope.export_protocols=[];			
+			angular.forEach($scope.export_ct_options,function(value,key){
+				if (value){					
+					bodypart.push(key);	
+				}
+			});			
+			if (bodypart.length<1){
+				$("#dialog").html("<p>No data selected.</p>");
+				var theDialog = $("#dialog").dialog(opt);					
+				var dialog = theDialog.dialog("open");
+				setTimeout(function() { dialog.dialog("close"); }, 1800);
+				return;
+			}
+			$http({
+				url: 'ajax/export_protocol',
+				method: "POST",
+				data : {modality:modal,bodypart_full:bodypart}
+			}).success(function (data) {
+				console.log(data);
+				if (angular.isObject(data)){										
+					$scope.export_protocols=data.slice(0);						
+					alasql('SELECT * INTO CSV("export_protocols.csv",{headers:true}) FROM ?',[$scope.export_protocols]);
+				}else{
+					$("#dialog").html("<p>No data exported. Try another one.</p>");
+					var theDialog = $("#dialog").dialog(opt);					
+					var dialog = theDialog.dialog("open");
+					setTimeout(function() { dialog.dialog("close"); }, 1800);
+				}
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
 		this.tab='Home';
 		this.selectprotocols=function(modal,bodypart){
 			//console.log(bodypart);

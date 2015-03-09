@@ -37,6 +37,8 @@
 	<script type="text/javascript" src="js/angular.js"></script>
 	<script type="text/javascript" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
 	<script src="js/dirPagination.js"></script>
+	<script type="text/javascript" src="js/alasql.min.js"></script>
+	<script type="text/javascript" src="js/xlsx.core.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript">		   
@@ -262,7 +264,7 @@
                                     <a href ng-click="panel.selectprotocols('MR','Head')">Head</a>
                                 </li>                                                          
 								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','neck')">Neck</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Neck')">Neck</a>
                                 </li> 
 								<li>
                                     <a href ng-click="panel.selectprotocols('MR','Cervical Spine')"> Cervical Spine</a>
@@ -280,7 +282,7 @@
                                     <a href ng-click="panel.selectprotocols('MR','Variable')">Variable</a>
                                 </li> 
 								<li>
-                                    <a href ng-click="panel.selectprotocols('MR','others')">others</a>
+                                    <a href ng-click="panel.selectprotocols('MR','Others')">Others</a>
                                 </li> 
                             </ul>
                             <!-- /.nav-second-level -->
@@ -310,7 +312,17 @@
 			</div>
 					
 			
-			<div ng-show="panel.isSelected('Import')">						
+			<div ng-show="panel.isSelected('Import')">	
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">Import</h1>
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>            
+				<!-- /.row -->
+				
+				<div class="row">
+					<div class="col-lg-12">
 						<div  class="input-group" style="width:500px;margin-left:15px;height:50px;">
 							<span class="input-group-btn">
 								<span class="input-group-btn">
@@ -325,6 +337,140 @@
 							</span>
                         </div>									
 						<div id='import-result'></div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div ng-show="panel.isSelected('Export')">	
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">Export</h1>
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>            
+				<!-- /.row -->
+				
+				<div class="row">
+                <div class="col-lg-12 export">
+				
+				<p>Neuro CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.head"> Head
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.neck"> Neck
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.cervical_spine"> Cervical Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Thoracic Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.lumbar_spine"> Lumbar Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.lumbar_spine_cord"> Lumbar Spine Cord
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.brachial_plexus"> Brachial Plexus
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.facial_bones"> Facial Bones
+					</label>
+				</div>	
+				<p>Musculoskeletal CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.ankle"> Ankle
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.foot"> Foot
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.shoulder"> Shoulder
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.wrist"> Wrist
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.hand"> Hand
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.pelvis"> Pelvis
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.hip"> Hip
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.knee"> Knee
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.variable"> Variable
+					</label>
+				</div>	
+				<p>Body CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.abdomen_pelvis"> Abdomen/Pelvis
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.others"> Others
+					</label>					
+				</div>	
+				<p>Cardiac CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.heart"> Heart
+					</label>					
+				</div>	
+				<div id='export-result'></div>
+				<button class="btn btn-default" type="button" ng-click="export_data('CT')">
+					Export CT
+				</button>	
+				</div>
+				</div>				
+				
+				<div class="row">
+                <div class="col-lg-12 export">				
+				<p>Body MR <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				
+				<p style="font-size:16px">Neuro MR <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.head"> Head
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.neck"> Neck
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.cervical_spine"> Cervical Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Thoracic Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Lumbar Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> CTL Spine
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Variable
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.thoracic_spine"> Others
+					</label>
+				</div>	
+				
+				<div id='export-result'></div>
+				<button class="btn btn-default" type="button" ng-click="export_data('MR')">
+					Export MR
+				</button>	
+				</div>				
+				</div>				
 			</div>
 			
 			

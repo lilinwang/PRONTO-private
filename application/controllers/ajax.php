@@ -92,7 +92,16 @@ class Ajax extends CI_Controller {
 			
 		echo json_encode($result);				
 	}
-	
+	function export_protocol(){
+		$data = json_decode(file_get_contents("php://input"));
+		
+		$modality = mysql_real_escape_string($data->modality);		
+		
+		$this->load->model('protocol_series_model');				
+		$result= $this->protocol_series_model->get_export($data->bodypart_full,$modality);		
+				
+		echo json_encode($result);				
+	}
     function get_profile()
 	{
 		$this->load->model('user_model');

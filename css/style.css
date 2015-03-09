@@ -4,3 +4,14 @@
 .series li{
 	margin-bottom:25px;
 }
+
+.exportbox label{
+	margin-left:15px;
+	margin-bottom:10px;	
+}
+.export{
+	margin-bottom:30px;
+}
+.export p{	
+	font-size:16px;
+}
