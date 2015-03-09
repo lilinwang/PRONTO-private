@@ -30,8 +30,7 @@
 		$scope.records=[];
 		$scope.history_start="";
 		$scope.history_end="";
-		$scope.export_ct_options={
-			neuro_ct:false,
+		$scope.export_ct_options={			
 			head:false,
 			neck:false,		
 			cervical_spine:false,
@@ -220,6 +219,22 @@
 				function (data) {
 				console.log(data);				
 			});	
+		};
+		this.export_one_protocol=function(){
+			var one_protocol=[];	
+			console.log($scope.protocols);
+			console.log($scope.series);
+			var len=$scope.series.length;
+			for (var i=0;i<len;i++){				
+				var tmp={};
+				//tmp.concat($scope.protocols[0],$scope.series[i]);
+				angular.extend(tmp, $scope.protocols[0],$scope.series[i], true);
+				delete tmp['id'];
+				delete tmp['show'];
+				one_protocol.push(tmp);
+			}								
+			console.log(one_protocol);
+			alasql('SELECT * INTO CSV("export_protocols.csv",{headers:true}) FROM ?',[one_protocol]);				
 		};
 		this.searchprotocols=function(){
 			console.log($scope.search_key);

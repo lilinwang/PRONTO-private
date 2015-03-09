@@ -354,7 +354,7 @@
 				<div class="row">
                 <div class="col-lg-12 export">
 				
-				<p>Neuro CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<p>Neuro CT </p>			
 				<div class="checkbox exportbox">
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.head"> Head
@@ -381,7 +381,7 @@
 						<input type="checkbox" ng-model="export_ct_options.facial_bones"> Facial Bones
 					</label>
 				</div>	
-				<p>Musculoskeletal CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<p>Musculoskeletal CT </p>			
 				<div class="checkbox exportbox">
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.ankle"> Ankle
@@ -411,7 +411,7 @@
 						<input type="checkbox" ng-model="export_ct_options.variable"> Variable
 					</label>
 				</div>	
-				<p>Body CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<p>Body CT </p>			
 				<div class="checkbox exportbox">
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.abdomen_pelvis"> Abdomen/Pelvis
@@ -420,7 +420,7 @@
 						<input type="checkbox" ng-model="export_ct_options.others"> Others
 					</label>					
 				</div>	
-				<p>Cardiac CT <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<p>Cardiac CT </p>			
 				<div class="checkbox exportbox">
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.heart"> Heart
@@ -435,9 +435,9 @@
 				
 				<div class="row">
                 <div class="col-lg-12 export">				
-				<p>Body MR <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<p>Body MR </p>			
 				
-				<p style="font-size:16px">Neuro MR <span><input type="checkbox" ng-model="export_ct_options.neuro" >  check all</span></p>			
+				<p>Neuro MR </p>			
 				<div class="checkbox exportbox">
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.head"> Head
@@ -705,6 +705,9 @@
 			
 			<button class="btn btn-default" ng-click="panel.deleteprotocol()" type="button">
 				DELETE PROTOCOL
+            </button>
+			<button class="btn btn-default" ng-click="panel.export_one_protocol()" type="button">
+				EXPORT PROTOCOL
             </button>
 			<p id='result'></p>
 		</div>	
