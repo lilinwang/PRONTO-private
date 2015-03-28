@@ -170,37 +170,59 @@
                                 </span>
                             </div>
                             <!-- /input-group -->
-                        </li>
+                        </li>						
                         
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Neuro CT<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> CTNeuro <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-								<li> <a href ng-click="panel.selectprotocols('CT','head')">Head</a></li>						                               
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','neck')">Neck</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Cervical Spine')">Cervical Spine</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Thoracic Spine')">Thoracic Spine</a>
-                                </li>
-                                <li>
-                                    <a href ng-click="panel.selectprotocols('CT','Lumbar Spine')">Lumbar Spine</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Lumbar Spinal Cord')">Lumbar Spinal Cord</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Brachial Plexus')">Brachial Plexus</a>
-                                </li>
-								<li>
-                                    <a href ng-click="panel.selectprotocols('CT','Facial Bones')">Facial Bones</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+								<li> 
+									<a href>Head<span class="fa arrow"></span></a>
+									<ul class="nav nav-third-level">
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-Head-Adults')">Adults</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-head-peds')">Peds</a></li>
+									</ul>
+								</li>						                               
+                                <li> 
+									<a href>Neck<span class="fa arrow"></span></a>
+									<ul class="nav nav-third-level">
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-adults')">Adults</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-peds')">Peds</a></li>
+									</ul>
+								</li>
+								<li> 
+									<a href="#">Spine<span class="fa arrow"></span></a>
+									<ul class="nav nav-third-level">
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-adults')">Adults</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-peds')">Peds</a></li>
+									</ul>
+								</li>
+								<li> 
+									<a href="#">Face<span class="fa arrow"></span></a>
+									<ul class="nav nav-third-level">
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-adults')">Adults</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-peds')">Peds</a></li>
+									</ul>
+								</li>
+                            </ul>                           
                         </li>
-                        <li>
+						<li>
+                            <a href ng-click="panel.selectprotocols('CTMusculoskeletal')"><i class="fa fa-wrench fa-fw"></i> CTMusculoskeletal </span></a>                                    
+                        </li>
+						<li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> CTChestBody <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+								<li><a href ng-click="panel.selectprotocols('CTChestBody-adults')">Adults</a></li>
+								<li><a href ng-click="panel.selectprotocols('CTChestBody-peds')">Peds</a></li>								
+                            </ul>                           
+                        </li>
+						<li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> CTChest <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+								<li><a href ng-click="panel.selectprotocols('CTChest-adults')">Adults</a></li>
+								<li><a href ng-click="panel.selectprotocols('CTChest-peds')">Peds</a></li>								
+                            </ul>                           
+                        </li>
+                       <!-- <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Musculoskeletal CT<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -231,7 +253,7 @@
                                     <a href ng-click="panel.selectprotocols('CT','Variable')">Variable</a>
                                 </li>								
                             </ul>
-                            <!-- /.nav-second-level -->
+                           
                         </li>
 						<li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Body CT<span class="fa arrow"></span></a>
@@ -243,7 +265,7 @@
                                     <a href ng-click="panel.selectprotocols('CT','Others')">Others</a>
                                 </li>                                	
                             </ul>
-                            <!-- /.nav-second-level -->
+                           
                         </li>
 						<li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Cardiac CT<span class="fa arrow"></span></a>
@@ -252,7 +274,6 @@
                                     <a href ng-click="panel.selectprotocols('CT','Heart')">Heart</a>
                                 </li>                                                          
                             </ul>
-                            <!-- /.nav-second-level -->
                         </li>
 						<li>
                             <a href href ng-click="panel.selectprotocols('MR','')"><i class="fa fa-wrench fa-fw"></i> Body MR</a>                            
@@ -285,8 +306,9 @@
                                     <a href ng-click="panel.selectprotocols('MR','Others')">Others</a>
                                 </li> 
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>                        
+                            
+                        </li>    
+-->						
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -353,7 +375,66 @@
 				
 				<div class="row">
                 <div class="col-lg-12 export">
+				<p>Neuro CT </p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Adults"> Head-Adults
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Peds"> Head-Peds
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Adults"> Neck-Adults
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Peds"> Neck-Peds
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Adults"> Spine-Adults
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Peds"> Spine-Peds
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Adults"> Face-Adults
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Peds"> Face-Peds
+					</label>
+				</div>	
+				<p>Musculoskeletal CT <input type="checkbox" ng-model="export_ct_options.CTMusculoskeletal"></p>			
 				
+				<p>ChestBody CT </p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Adults"> Adults
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Peds"> Peds
+					</label>					
+				</div>	
+				<p> Chest CT </p>			
+				<div class="checkbox exportbox">
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTChest_Adults"> Adults
+					</label>
+					<label>
+						<input type="checkbox" ng-model="export_ct_options.CTChest_Peds"> Peds
+					</label>						
+				</div>	
+				<div id='export-result'></div>
+				<button class="btn btn-default" type="button" ng-click="export_data('CT')">
+					Export CT
+				</button>	
+				<button class="btn btn-default" type="button" ng-click="check_all('CT',true)">
+					Check all CT
+				</button>	
+				<button class="btn btn-default" type="button" ng-click="check_all('CT',false)">
+					Uncheck all CT
+				</button>	
+				</div>
+				</div>				
+				<!--
 				<p>Neuro CT </p>			
 				<div class="checkbox exportbox">
 					<label>
@@ -464,13 +545,14 @@
 						<input type="checkbox" ng-model="export_mr_options.others"> Others
 					</label>
 				</div>	
-				
+			
 				<div id='export-result'></div>
 				<button class="btn btn-default" type="button" ng-click="export_data('MR')">
 					Export MR
 				</button>	
 				</div>				
-				</div>				
+				</div>
+-->				
 			</div>
 			
 			
@@ -508,37 +590,18 @@
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-protocol">
                                     <thead>
-                                        <tr>
-											<th>protocol ID</th>
+                                        <tr>											
                                             <th>protocol Name</th>
-                                            <th>Code</th>
-                                            <th>Description</th>
-											<th>Modality</th>
-											<th>Indication</th>
-                                            <th>General Body Part</th>
-											<th>Body Part Code</th>
-                                            <th>Detailed Body Part</th>
-                                            <th>Approval date</th>
-                                            <th>Golive date</th>
-                                            <th>Approved by</th>																															
+											<th>protocol Category</th>
+											<th>Indication</th>																															
 										</tr>
                                     </thead>
                                     <tbody>										 																			
-                                        <tr class="odd gradeX" ng-repeat="protocol in protocols" ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.modality,protocol.bodypart_full)" style="cursor: pointer">										
-											<td>	
-												{{protocol.protocol_number}}																
-											</td>
-                                            <td>{{protocol.protocol_name}}</td>											
-                                            <td>{{protocol.code}}</td>
-                                            <td>{{protocol.description}}</td>
-											<td>{{protocol.modality}}</td>
+                                        <tr class="odd gradeX" ng-repeat="protocol in protocols" ng-click="panel.showDetailedProtocol(protocol.protocol_number,protocol.protocol_category)" style="cursor: pointer">											
+                                            <td>{{protocol.protocol_name}}</td>
+											<td>{{protocol.protocol_category}}</td>                                            											
 											<td>{{protocol.indication}}</td>
-                                            <td class="center">{{protocol.bodypart}}</td>
-                                            <td class="center">{{protocol.bodypart_code}}</td>
-											<td>{{protocol.bodypart_full}}</td>
-                                            <td>{{protocol.approval_date}}</td>
-                                            <td>{{protocol.golive_date}}</td>
-											<td>{{protocol.approved_by}}</td>                                            								
+                                                                                								
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -595,36 +658,16 @@
 								<table class="table table-striped table-bordered table-hover" id="dataTables-detailed">
                                     <thead>
                                         <tr>
-											<th>protocol ID</th>
-                                            <th>protocol Name</th>
-                                            <th>Code</th>
-                                            <th>Description</th>
-											<th>Modality</th>
-											<th>Indication</th>
-                                            <th>General Body Part</th>
-											<th>Body Part Code</th>
-                                            <th>Detailed Body Part</th>
-                                            <th>Approval_date</th>
-                                            <th>Golive date</th>
-                                            <th>Approved by</th>									
+											<th>protocol Name</th>
+											<th>protocol Category</th>
+											<th>Indication</th>									
 										</tr>
                                     </thead>
                                     <tbody>										 																			
                                         <tr class="odd gradeX" ng-repeat="protocol in protocols">										
-											<td>		
-												{{protocol.protocol_number}}
-											</td>
-                                            <td>{{protocol.protocol_name}}</td>											
-                                            <td>{{protocol.code}}</td>
-                                            <td>{{protocol.description}}</td>
-											<td>{{protocol.modality}}</td>
-											<td>{{protocol.indication}}</td>
-                                            <td class="center">{{protocol.bodypart}}</td>
-                                            <td class="center">{{protocol.bodypart_code}}</td>
-											<td>{{protocol.bodypart_full}}</td>
-                                            <td>{{protocol.approval_date}}</td>
-                                            <td>{{protocol.golive_date}}</td>
-											<td>{{protocol.approved_by}}</td>                                            									 
+											<td>{{protocol.protocol_name}}</td>
+											<td>{{protocol.protocol_category}}</td>                                            											
+											<td>{{protocol.indication}}</td>                                          									 
                                         </tr>                                       
                                     </tbody>
                                 </table>
@@ -649,10 +692,8 @@
 							<ul class="nav" >                                                                                            									 
 								<li ng-repeat="serie in series">
 									<a style="font-size:18px" ng-click="panel.showSeries(serie)"> {{serie.series_name}}<span class="fa arrow"></span></a>									
-									<ul class="nav series" ng-show="serie.show && detail_protocol_modality=='CT'" >																				                                                                                                                                                                                                                                                                    
-										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>
-										
-										<li><h4>Landmark</h4>{{serie.landmark}}</li>
+									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='C'" >																				                                                                                                                                                                                                                                                                    
+										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>																				
                                         										
 										<li><h4>Intravenous Contrast</h4>{{serie.intravenous_contrast}}</li>
 										
@@ -694,7 +735,7 @@
 										
 										<li><h4>Notes</h4>{{serie.notes}}</li>  
 									</ul>
-									<ul class="nav series" ng-show="serie.show && detail_protocol_modality=='MR'" >																				                                                                                                                                                                                                                                                                    
+									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='M'" >																				                                                                                                                                                                                                                                                                    
 										<li><h4>Pulse Sequence</h4>{{serie.pulse_sequence}}</li>
 										
 										<li><h4>Plane</h4>{{serie.plane}}</li>
@@ -744,8 +785,7 @@
 						<input id="datepicker_end" data-date-format="yyyy-mm-dd" ng-model="history_end" type="text" class="input-sm form-control" name="end" >
 						<script>
 						$("#datepicker_end").datepicker("setDate", new Date());
-						</script>						
-											
+						</script>																	
 					</div>					
 				</div>
 				<button class="btn btn-default"  type="button" ng-click="panel.showHistory()">Show History</button>

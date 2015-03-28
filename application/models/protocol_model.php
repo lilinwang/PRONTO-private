@@ -12,10 +12,10 @@ class protocol_model extends CI_Model{
 		$query = $this->db->query($sql, $params);
 	}
 	
-	function get_list_by_bodypart($bodypart_full,$modality)
+	function get_list_by_category($category)
 	{
-		$sql = 'SELECT * FROM protocol WHERE bodypart_full LIKE ? and modality LIKE ?';
-		$params = array($bodypart_full,$modality);
+		$sql = 'SELECT * FROM protocol WHERE protocol_category LIKE ?';
+		$params = array($category);
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
 			$result=$query->result_array();

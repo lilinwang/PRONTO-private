@@ -18,8 +18,7 @@
 		$scope.search_key="";
 		$scope.protocols=[];
 		$scope.detail_protocol="";
-		$scope.detail_protocol_modality="";
-		$scope.detail_protocol_bodypart="";
+		$scope.detail_protocol_category="";
 		$scope.series=[];
 		$scope.sections=[
 			'Home',
@@ -30,27 +29,23 @@
 		$scope.records=[];
 		$scope.history_start="";
 		$scope.history_end="";
+		
 		$scope.export_ct_options={			
-			head:false,
-			neck:false,		
-			cervical_spine:false,
-			thoracic_spine:false,			
-			lumbar_spine:false,
-			lumbar_spine_cord:false,
-			brachial_plexus:false,
-			facial_bones:false,
-			ankle:false,
-			foot:false,
-			shoulder:false,
-			wrist:false,
-			hand:false,
-			pelvis:false,
-			hip:false,
-			knee:false,
-			variable:false,
-			abdomen_pelvis:false,
-			others:false,
-			heart:false
+			CTChest_Adults:false,
+			CTChest_Peds:false,
+			CTBody_Adults:false,
+			CTBody_Peds:false,
+			CTChestbody_Adults:false,
+			CTChestbody_Peds:false,
+			CTMusculoskeletal:false,
+			CTNeuro_Head_Adults:false,
+			CTNeuro_Head_Peds:false,
+			CTNeuro_Face_Adults:false,
+			CTNeuro_Face_Peds:false,
+			CTNeuro_Neck_Adults:false,
+			CTNeuro_Neck_Peds:false,
+			CTNeuro_Spine_Adults:false,
+			CTNeuro_Spine_Peds:false
 		};
 		$scope.export_mr_options={			
 			head:false,
@@ -63,24 +58,35 @@
 			others:false
 		};
 		$scope.export_protocols=[];	
+		$scope.check_all=function(modal,status){
+			if (modal=='MR'){
+				angular.forEach($scope.export_mr_options,function(value,key){
+					$scope.export_mr_options[key]=status;
+				});	
+			}else{
+				angular.forEach($scope.export_ct_options,function(value,key){
+					$scope.export_ct_options[key]=status;
+				});
+			}
+		};
 		$scope.export_data=function(modal){
-			var bodypart=[];
+			var category=[];
 			$scope.export_protocols=[];	
 			if (modal=="MR"){
 				angular.forEach($scope.export_mr_options,function(value,key){
 					if (value){					
-						bodypart.push(key);	
+						category.push(key);	
 					}
 				});	
 			}else{
 				angular.forEach($scope.export_ct_options,function(value,key){
 					if (value){					
-						bodypart.push(key);	
+						category.push(key);	
 					}
 				});			
 			}
-			//console.log(bodypart);
-			if (bodypart.length<1){
+			//console.log(category);
+			if (category.length<1){
 				$("#dialog").html("<p>No data selected.</p>");
 				var theDialog = $("#dialog").dialog(opt);					
 				var dialog = theDialog.dialog("open");
@@ -90,7 +96,7 @@
 			$http({
 				url: 'ajax/export_protocol',
 				method: "POST",
-				data : {modality:modal,bodypart_full:bodypart}
+				data : {modality:modal,category_full:category}
 			}).success(function (data) {
 				console.log(data);
 				/*var one_protocol=[];				
@@ -104,12 +110,12 @@
 				}*/								
 				
 				if (modal=="MR"){
-					for (var i=0;i<bodypart.length;i++){
-						$scope.export_mr_options[bodypart[i]]=false;
+					for (var i=0;i<category.length;i++){
+						$scope.export_mr_options[category[i]]=false;
 					}								
 				}else{
-					for (var i=0;i<bodypart.length;i++){
-						$scope.export_ct_options[bodypart[i]]=false;
+					for (var i=0;i<category.length;i++){
+						$scope.export_ct_options[category[i]]=false;
 					}	
 				}
 			
@@ -131,14 +137,14 @@
 			});
 		};
 		this.tab='Home';
-		this.selectprotocols=function(modal,bodypart){
+		this.selectprotocols=function(category_data){
 			//console.log(bodypart);
 			this.select('Protocols');
 			//this.tab='Protocols';			
 			$http({
 				url: 'ajax/get_protocol',
 				method: "POST",
-				data : {modality:modal,bodypart_full:bodypart}
+				data : {category:category_data}
 			}).success(function (data) {
 				//console.log(data);
 				if (angular.isObject(data)){					
@@ -148,7 +154,7 @@
 					//console.log(data);
 					$scope.protocols=[];
 				}
-				//console.log($scope.protocols);
+				//console.log($scope.protocols[0]);
 				//$scope.users = data;
 			}).error(function (data) {
 				console.log(data);				
@@ -215,12 +221,13 @@
 				this.showHistory();
 			}			
 		}
-		this.showDetailedProtocol=function(protocol_number,modality,bodypart){
+		this.showDetailedProtocol=function(protocol_number,protocol_category){
 			//console.log(protocol_number);
 			this.tab='DetailedProtocol';	
 			$scope.detail_protocol=protocol_number;
-			$scope.detail_protocol_modality=modality;
-			$scope.detail_protocol_bodypart=bodypart;
+			$scope.detail_protocol_category=protocol_category;
+			$scope.all_series_button="Show All Series";
+			
 			$http({
 				url: 'detailed_ajax/get_protocol',
 				method: "POST",
@@ -242,7 +249,7 @@
 			$http({
 				url: 'detailed_ajax/get_series',
 				method: "POST",
-				data : {number:protocol_number,modal:modality}
+				data : {number:protocol_number,category:protocol_category}
 			}).success(function (data) {
 				console.log(data);
 				if (angular.isObject(data)){					
@@ -337,11 +344,11 @@
 						url: 'detailed_ajax/delete',
 						method: "POST",
 						data : {number:$scope.detail_protocol,
-								password:result,modality:$scope.detail_protocol_modality}
+								password:result,category:$scope.detail_protocol_category}
 					}).success(function (data) {
 					console.log(data);
 						if (data==="1"){
-							contro[0].selectprotocols($scope.detail_protocol_modality,$scope.detail_protocol_bodypart);
+							contro[0].selectprotocols($scope.detail_protocol_category);
 							//$('#result').html("Delete success!"); 
 						}else{
 							$('#result').html("Wrong password!");
@@ -354,23 +361,7 @@
 		}
 	}]);		
 	
-	app.controller("protocolController", ['$http','$scope',function($http,$scope){
-		$scope.cred = {protocol_number:"",protocol_name: "",code: "",description: "",modality: "",bodypart: "",bodypart_full: "",approval_date: "",golive_date: "",approved_by: "",series: "",notes: "",indication:"",patient_orientation:"",landmark:"",intravenous_contrast:"",scout:""};
-		
-		$scope.addprotocol = function() {
-			console.log($scope.cred);
-			$http({
-				url: 'ajax/add_protocol',
-				method: "POST",
-				data : $scope.cred
-			}).success(function (data) {
-				console.log(data);
-				//$scope.users = data;
-			}).error(function (data) {
-				console.log(data);				
-			});;			
-		};
-	}]);
+	
 	
 	
 	var base_url="radiology";
