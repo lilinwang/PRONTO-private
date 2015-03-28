@@ -4,25 +4,25 @@ class protocol_series_model extends CI_Model{
 	function __construct(){
 		parent::__construct();
 	}
-	function get_export($bodypart_full,$modality)
+	function get_export($category_full,$modality)
 	{		
 		$sql;
 		if ($modality=="MR"){
-			$sql = 'SELECT * FROM protocol as p inner join series_mr as s on p.protocol_number=s.protocol_number WHERE modality LIKE ? AND (bodypart_full LIKE ? ';
+			$sql = 'SELECT * FROM protocol as p inner join series_mr as s on p.protocol_number=s.protocol_number WHERE (protocol_category LIKE ? ';
 		}else{
-			$sql = 'SELECT * FROM protocol as p inner join series_ct as s on p.protocol_number=s.protocol_number WHERE modality LIKE ? AND (bodypart_full LIKE ? ';
+			$sql = 'SELECT * FROM protocol as p inner join series_ct as s on p.protocol_number=s.protocol_number WHERE (protocol_category LIKE ? ';
 		}
 		
-		$count = count($bodypart_full);	
+		$count = count($category_full);	
 		
 		for ($i = 1; $i < $count; $i++) {   
-			$sql=$sql."OR bodypart_full LIKE ? ";
+			$sql=$sql."OR protocol_category LIKE ? ";
 		}
 		$sql=$sql.")";
 		
-		$params = array($modality);
+		$params = array();
 		
-		foreach ($bodypart_full as $body) {   			
+		foreach ($category_full as $body) {   			
 			array_push($params,$body);
 		}
 		//var_dump( $params);

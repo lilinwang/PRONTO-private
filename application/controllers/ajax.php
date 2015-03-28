@@ -84,10 +84,9 @@ class Ajax extends CI_Controller {
 	function get_protocol(){	
 		$data = json_decode(file_get_contents("php://input"));
 		
-		$modality = mysql_real_escape_string($data->modality);
-		$bodypart_full = mysql_real_escape_string($data->bodypart_full);			
+		$category = mysql_real_escape_string($data->category);
 		$this->load->model('protocol_model');				
-		$result= $this->protocol_model->get_list_by_bodypart($bodypart_full,$modality);		
+		$result= $this->protocol_model->get_list_by_category($category);		
 		
 			
 		echo json_encode($result);				
@@ -98,7 +97,7 @@ class Ajax extends CI_Controller {
 		$modality = mysql_real_escape_string($data->modality);		
 		//echo $modality;
 		$this->load->model('protocol_series_model');				
-		$result= $this->protocol_series_model->get_export($data->bodypart_full,$modality);		
+		$result= $this->protocol_series_model->get_export($data->category_full,$modality);		
 				
 		echo json_encode($result);				
 	}
@@ -138,16 +137,8 @@ class Ajax extends CI_Controller {
 				$protocol_data = array(
                         'protocol_name'=>$row['Protocol Name'],
                         'protocol_number'=>$row['Protocol ID'],
-                        'code'=>($row['Code']==null)?NULL:$row['Code'],
-                        'description'=>$row['Description'],
-						'modality'=>$row['Modality'],
-                        'bodypart'=>$row['BodyPart'],
-                        'bodypart_code'=>($row['BodyPart Code']==null)?NULL:$row['BodyPart Code'],
-                        'bodypart_full'=>$row['BodyPart Full'],
-						'approval_date'=>($row['Approval Date']==null)?NULL:$row['Approval Date'],
-                        'golive_date'=>($row['Go-Live Date']==null)?NULL:$row['Go-Live Date'],
-                        'approved_by'=>$row['Approved by'],                        
-						'indication'=>$row['Indications'],
+						'protocol_category'=>$row['Protocol Category'],
+                        'indication'=>$row['Indications'],
 						'report'=>$row['Report Template']
                 );					
 				if ($row['Protocol ID']==NULL) break;	
@@ -157,7 +148,7 @@ class Ajax extends CI_Controller {
 				array_push($imported_protocols[1], $row['Protocol Name']);				
 				
 				$series_status;
-				if (strtoupper($protocol_data['modality'])==='MR'){
+				if (strtoupper($protocol_data['protocol_category'][0])==='M'){
 					$series_data = array(
                         'series_name'=>$row['Series'],                        
                         'pulse_sequence'=>$row['Pulse Sequence'],
@@ -175,11 +166,10 @@ class Ajax extends CI_Controller {
 				}else{
 					$series_data = array(
 						'series_name'=>$row['Series'],                        
-                        'patient_orientation'=>$row['Patient Orientation'],
-                        'landmark'=>$row['Landmark'],
+                        'patient_orientation'=>$row['Orientation'],                        
                         'intravenous_contrast'=>$row['Intravenous Contrast'],
 						'oral_contrast'=>$row['Oral Contrast'],
-						'scout'=>$row['Scout'],
+						'scout'=>$row['Scout (Series 1)'],
                         'scanning_mode'=>$row['Scanning Mode'],
                         'range_direction'=>$row['Range/Direction'],
                         'gantry_angle'=>$row['Gantry Angle'],
@@ -190,7 +180,8 @@ class Ajax extends CI_Controller {
 						'table_speed'=>$row['Table Speed (mm/rotation)'],
                         'pitch'=>$row['Pitch'],
 						'kvp'=>$row['kVp'],						
-                        'am'=>$row['mA'],
+                        'ma'=>$row['mA'],
+						'noise_index'=>$row['Noise Index'],
 						'noise_reduction'=>$row['Noise Reduction'],
                         'rotation_time'=>$row['Rotation Time'],
                         'scan_fov'=>$row['Scan FOV'],
@@ -199,9 +190,11 @@ class Ajax extends CI_Controller {
                         'post_processing'=>$row['Post Processing'],
 						'transfer_images'=>$row['Transfer Images'],
                         'notes'=>$row['Notes'],
+						'ctdi'=>$row['CTDI'],
 						'protocol_number'=>$row['Protocol ID']
                     );
                     $series_status=$this->series_ct_model->insert_new($series_data,$row['Series']);
+					
 				}	
 				//0: new protocol; 1: modified; 2:no change
 				$status=1;
