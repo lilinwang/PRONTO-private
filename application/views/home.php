@@ -70,7 +70,7 @@
                 type: 'post',
 				enctype: 'multipart/form-data',
                 complete: function(data){				
-					//console.log(data['responseText']);																                   									
+					console.log(data['responseText']);																                   									
 					var response = JSON.parse(data['responseText']);
 					//console.log(response);
 					$('#upload-icon').html('<i class="fa fa-upload"></i>');					
