@@ -70,7 +70,7 @@
                 type: 'post',
 				enctype: 'multipart/form-data',
                 complete: function(data){				
-					//console.log(data['responseText']);																                   									
+					console.log(data['responseText']);																                   									
 					var response = JSON.parse(data['responseText']);
 					//console.log(response);
 					$('#upload-icon').html('<i class="fa fa-upload"></i>');					
@@ -718,9 +718,10 @@
 										<li><h4>Pitch</h4>{{serie.pitch}}</li>  
 										
 										<li><h4>kVp</h4>{{serie.kvp}}</li>
-										
+																				
 										<li><h4>mA</h4>{{serie.ma}}</li>
-																					
+
+<li><h4>Noise Index</h4>{{serie.noise_index}}</li>				
 										<li><h4>Noise Reduction</h4>{{serie.noise_reduction}}</li>
 										
 										<li><h4>Rotation Time</h4>{{serie.rotation_time}}</li>
