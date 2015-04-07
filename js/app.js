@@ -31,20 +31,20 @@
 		$scope.history_end="";
 		
 		$scope.export_ct_options={			
-			CTChest_Adult:false,
+			CTChest_Adults:false,
 			CTChest_Peds:false,
-			CTBody_Adult:false,
+			CTBody_Adults:false,
 			CTBody_Peds:false,
-			CTChestbody_Adult:false,
+			CTChestbody_Adults:false,
 			CTChestbody_Peds:false,
 			CTMusculoskeletal:false,
-			CTNeuro_Head_Adult:false,
+			CTNeuro_Head_Adults:false,
 			CTNeuro_Head_Peds:false,
-			CTNeuro_Face_Adult:false,
+			CTNeuro_Face_Adults:false,
 			CTNeuro_Face_Peds:false,
-			CTNeuro_Neck_Adult:false,
+			CTNeuro_Neck_Adults:false,
 			CTNeuro_Neck_Peds:false,
-			CTNeuro_Spine_Adult:false,
+			CTNeuro_Spine_Adults:false,
 			CTNeuro_Spine_Peds:false
 		};
 		$scope.export_mr_options={			
@@ -57,82 +57,6 @@
 			variable:false,			
 			others:false
 		};
-		$scope.menus={
-			1:{
-				name:'CTNeuro',
-				second_menus:{
-					1:{
-						name:'Head',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					},
-					2:{
-						name:'Neck',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					},
-					3:{
-						name:'Spine',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					},
-					4:{
-						name:'Face',
-						third_menus:{
-							1:{
-								name:'Adult'								
-							},
-							2:{
-								name:'Peds'								
-							}
-						}
-					}
-				}
-			},
-			2:{
-				name:'CTMusculoskeletal'				
-			},
-			3:{
-				name:'CTChestBody',
-				second_menus:{
-					1:{
-						name:'Adult'								
-					},
-					2:{
-						name:'Peds'								
-					}
-				}
-			},
-			4:{
-				name:'CTChest',
-				second_menus:{
-					1:{
-						name:'Adult'								
-					},
-					2:{
-						name:'Peds'								
-					}
-				}
-			}
-		}
 		$scope.export_protocols=[];	
 		$scope.check_all=function(modal,status){
 			if (modal=='MR'){
@@ -214,7 +138,7 @@
 		};
 		this.tab='Home';
 		this.selectprotocols=function(category_data){
-			console.log(category_data);
+			//console.log(bodypart);
 			this.select('Protocols');
 			//this.tab='Protocols';			
 			$http({

@@ -14,8 +14,8 @@ class protocol_model extends CI_Model{
 	
 	function get_list_by_category($category)
 	{
-		$sql = "SELECT * FROM protocol WHERE protocol_category LIKE ?";
-		$params = array('%'.$category.'%');
+		$sql = 'SELECT * FROM protocol WHERE protocol_category LIKE ?';
+		$params = array($category);
         $query = $this->db->query($sql, $params);
         if ($query->num_rows() > 0) {
 			$result=$query->result_array();
@@ -31,7 +31,7 @@ class protocol_model extends CI_Model{
 		$ids = implode(" +",$content); 
 		
 		//echo $ids;
-		$sql="SELECT * FROM `protocol` WHERE MATCH (`protocol_name`, `indication`,`protocol_category`) AGAINST('+".$ids."' IN BOOLEAN MODE) ;";
+		$sql="SELECT * FROM `protocol` WHERE MATCH (protocol_name, description, bodypart_full, modality, indication) AGAINST('+".$ids."' IN BOOLEAN MODE) ;";
 		//echo $sql;
 		//$sql = "SELECT * FROM protocol WHERE bodypart_full IN ('".$ids."')";
 		//$params = array($ids);

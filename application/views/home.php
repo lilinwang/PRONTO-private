@@ -173,33 +173,33 @@
                         </li>						
                         
                         <li>
-                            <a href ng-click="panel.selectprotocols('CTNeuro')"><i class="fa fa-wrench fa-fw"></i> CTNeuro <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> CTNeuro <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
 								<li> 
-									<a href ng-click="panel.selectprotocols('CTNeuro-Head')" >Head<span class="fa arrow"></span></a>
+									<a href>Head<span class="fa arrow"></span></a>
 									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-Head-Adult')">Adult</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-Head-Adults')">Adults</a></li>
 										<li><a href ng-click="panel.selectprotocols('CTNeuro-head-peds')">Peds</a></li>
 									</ul>
 								</li>						                               
                                 <li> 
-									<a href ng-click="panel.selectprotocols('CTNeck')">Neck<span class="fa arrow"></span></a>
+									<a href>Neck<span class="fa arrow"></span></a>
 									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-Adult')">Adult</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-adults')">Adults</a></li>
 										<li><a href ng-click="panel.selectprotocols('CTNeuro-neck-peds')">Peds</a></li>
 									</ul>
 								</li>
 								<li> 
-									<a href ng-click="panel.selectprotocols('CTSpine')">Spine<span class="fa arrow"></span></a>
+									<a href="#">Spine<span class="fa arrow"></span></a>
 									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-Adult')">Adult</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-adults')">Adults</a></li>
 										<li><a href ng-click="panel.selectprotocols('CTNeuro-spine-peds')">Peds</a></li>
 									</ul>
 								</li>
 								<li> 
-									<a href ng-click="panel.selectprotocols('CTFace')">Face<span class="fa arrow"></span></a>
+									<a href="#">Face<span class="fa arrow"></span></a>
 									<ul class="nav nav-third-level">
-										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-Adult')">Adult</a></li>
+										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-adults')">Adults</a></li>
 										<li><a href ng-click="panel.selectprotocols('CTNeuro-face-peds')">Peds</a></li>
 									</ul>
 								</li>
@@ -209,16 +209,16 @@
                             <a href ng-click="panel.selectprotocols('CTMusculoskeletal')"><i class="fa fa-wrench fa-fw"></i> CTMusculoskeletal </span></a>                                    
                         </li>
 						<li>
-                            <a href ng-click="panel.selectprotocols('CTChestBody')"><i class="fa fa-wrench fa-fw"></i> CTChestBody <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> CTChestBody <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-								<li><a href ng-click="panel.selectprotocols('CTChestBody-Adult')">Adult</a></li>
+								<li><a href ng-click="panel.selectprotocols('CTChestBody-adults')">Adults</a></li>
 								<li><a href ng-click="panel.selectprotocols('CTChestBody-peds')">Peds</a></li>								
                             </ul>                           
                         </li>
 						<li>
-                            <a href ng-click="panel.selectprotocols('CTChest')"><i class="fa fa-wrench fa-fw"></i> CTChest <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> CTChest <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-								<li><a href ng-click="panel.selectprotocols('CTChest-Adult')">Adult</a></li>
+								<li><a href ng-click="panel.selectprotocols('CTChest-adults')">Adults</a></li>
 								<li><a href ng-click="panel.selectprotocols('CTChest-peds')">Peds</a></li>								
                             </ul>                           
                         </li>
@@ -378,25 +378,25 @@
 				<p>Neuro CT </p>			
 				<div class="checkbox exportbox">
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Adult"> Head-Adult
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Adults"> Head-Adults
 					</label>
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Head_Peds"> Head-Peds
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Adult"> Neck-Adult
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Adults"> Neck-Adults
 					</label>
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Neck_Peds"> Neck-Peds
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Adult"> Spine-Adult
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Adults"> Spine-Adults
 					</label>
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Spine_Peds"> Spine-Peds
 					</label>
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Adult"> Face-Adult
+						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Adults"> Face-Adults
 					</label>
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.CTNeuro_Face_Peds"> Face-Peds
@@ -407,7 +407,7 @@
 				<p>ChestBody CT </p>			
 				<div class="checkbox exportbox">
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Adult"> Adult
+						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Adults"> Adults
 					</label>
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.CTChestbody_Peds"> Peds
@@ -416,7 +416,7 @@
 				<p> Chest CT </p>			
 				<div class="checkbox exportbox">
 					<label>
-						<input type="checkbox" ng-model="export_ct_options.CTChest_Adult"> Adult
+						<input type="checkbox" ng-model="export_ct_options.CTChest_Adults"> Adults
 					</label>
 					<label>
 						<input type="checkbox" ng-model="export_ct_options.CTChest_Peds"> Peds
@@ -696,7 +696,7 @@
 										<li><h4>Patient Orientation</h4>{{serie.patient_orientation}}</li>																				
                                         										
 										<li><h4>Intravenous Contrast</h4>{{serie.intravenous_contrast}}</li>
-										<li><h4>Oral Contrast</h4>{{serie.oral_contrast}}</li>	
+										
 										<li><h4>Scout</h4>{{serie.scout}}</li>
 										
 										<li><h4>Scanning Mode</h4>{{serie.scanning_mode}}</li>
@@ -707,7 +707,7 @@
 										
 										<li><h4>Algorithm</h4>{{serie.algorithm}}</li>
 										
-										<li><h4>Beam Collimation / Detector Configuration</h4>{{serie.beam_collimation_detector_configuration}}</li>    
+										<li><h4>Collimation</h4>{{serie.collimation}}</li>    
 										
 										<li><h4>Slice Thickness</h4>{{serie.slice_thickness}}</li>
 										
@@ -718,7 +718,6 @@
 										<li><h4>Pitch</h4>{{serie.pitch}}</li>  
 										
 										<li><h4>kVp</h4>{{serie.kvp}}</li>
-																				
 										<li><h4>mA</h4>{{serie.ma}}</li>
 
 <li><h4>Noise Index</h4>{{serie.noise_index}}</li>				
@@ -729,13 +728,12 @@
 										<li><h4>Scan FOV</h4>{{serie.scan_fov}}</li>  
 										
 										<li><h4>Display FOV</h4>{{serie.display_fov}}</li>
-										<li><h4>Scan Delay</h4>{{serie.scan_delay}}</li>
+										
 										<li><h4>Post Processing</h4>{{serie.post_processing}}</li>
 										
 										<li><h4>Transfer Images</h4>{{serie.transfer_images}}</li>
 										
 										<li><h4>Notes</h4>{{serie.notes}}</li>  
-										<li><h4>CTDI</h4>{{serie.CTDI}}</li>
 									</ul>
 									<ul class="nav series" ng-show="serie.show && detail_protocol_category[0]=='M'" >																				                                                                                                                                                                                                                                                                    
 										<li><h4>Pulse Sequence</h4>{{serie.pulse_sequence}}</li>

@@ -44,11 +44,11 @@ class Detailed_ajax extends CI_Controller {
 		$user_name=$this->session->userdata('user_name');
 		$protocol_number = mysql_real_escape_string($data->number);					
 		$password = mysql_real_escape_string($data->password);	
-		$category=mysql_real_escape_string($data->category);	
+		$modality=mysql_real_escape_string($data->modality);	
 		if ($password=="cornellradiology"){
 			$this->load->model('protocol_model');				
 			$this->protocol_model->delete_by_number($protocol_number,$user_name);							
-			if ($category[0]=='M'){
+			if ($modality=="MR"){
 				$this->load->model('series_mr_model');				
 				$this->series_mr_model->delete_by_number($protocol_number);	
 			}else{
