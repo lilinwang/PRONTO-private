@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'localhost/radiology';
+$config['base_url']	= '54.165.111.90/radiology';
 
 /*
 |--------------------------------------------------------------------------

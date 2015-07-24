@@ -6,17 +6,19 @@
 		};	
 	}]);
 	
-	app.controller("PanelController", ['$http','$scope',function($http,$scope){
+	app.controller("PanelController", ['$http','$scope','$rootScope','$window',function($http,$scope,$rootScope,$window){		
+		
 		$scope.currentPage = 1;
 		$scope.pageSize = 10;
 		$scope.pageChangeHandler = function(num) {
 			console.log('meals page changed to ' + num);
 		};
 		//var pdata=this;
-		$scope.all_series_button="Show All Series";
+		$scope.all_series_button="Hide All Series";
 		$scope.all_history_button="Show All History";
 		$scope.search_key="";
 		$scope.protocols=[];
+		$scope.header="";
 		$scope.detail_protocol="";
 		$scope.detail_protocol_category="";
 		$scope.series=[];
@@ -28,64 +30,92 @@
 		];
 		$scope.records=[];
 		$scope.history_start="";
-		$scope.history_end="";
-		
-		$scope.export_ct_options={			
-			CTChest_Adults:false,
-			CTChest_Peds:false,
-			CTBody_Adults:false,
-			CTBody_Peds:false,
-			CTChestbody_Adults:false,
-			CTChestbody_Peds:false,
-			CTMusculoskeletal:false,
-			CTNeuro_Head_Adults:false,
-			CTNeuro_Head_Peds:false,
-			CTNeuro_Face_Adults:false,
-			CTNeuro_Face_Peds:false,
-			CTNeuro_Neck_Adults:false,
-			CTNeuro_Neck_Peds:false,
-			CTNeuro_Spine_Adults:false,
-			CTNeuro_Spine_Peds:false
-		};
-		$scope.export_mr_options={			
-			head:false,
-			neck:false,		
-			cervical_spine:false,
-			thoracic_spine:false,			
-			lumbar_spine:false,
-			ctl_cord:false,			
-			variable:false,			
-			others:false
-		};
+		$scope.history_end="";			
+				
 		$scope.export_protocols=[];	
+		$scope.categories=[];
+		
+		$scope.construct_categories=function(){			
+			$http({
+				url: 'ajax/get_category',
+				method: "POST",
+				data : {}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.categories=data.slice(0);
+					angular.forEach($scope.categories,function(option){						
+						option.checked=false;						
+					});	
+				}
+				else{
+					$scope.categories=[];
+				}
+				
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
+		this.construct_categories=function(){
+			
+			$http({
+				url: 'ajax/get_category',
+				method: "POST",
+				data : {}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.categories=data.slice(0);
+					angular.forEach($scope.categories,function(option){						
+						option.checked=false;						
+					});	
+					//console.log($scope.categories);
+				}
+				else{
+					//console.log(data);
+					$scope.categories=[];
+				}
+				
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
+		
 		$scope.check_all=function(modal,status){
 			if (modal=='MR'){
-				angular.forEach($scope.export_mr_options,function(value,key){
-					$scope.export_mr_options[key]=status;
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='M'){					
+						option.checked=status;					
+					}
 				});	
 			}else{
-				angular.forEach($scope.export_ct_options,function(value,key){
-					$scope.export_ct_options[key]=status;
-				});
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='C'){					
+						option.checked=status;					
+					}
+				});	
 			}
 		};
+		
 		$scope.export_data=function(modal){
 			var category=[];
 			$scope.export_protocols=[];	
+			
 			if (modal=="MR"){
-				angular.forEach($scope.export_mr_options,function(value,key){
-					if (value){					
-						category.push(key);	
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='M' && option.checked==true){					
+						category.push(option.name);	
 					}
 				});	
 			}else{
-				angular.forEach($scope.export_ct_options,function(value,key){
-					if (value){					
-						category.push(key);	
+				//console.log($scope.categories);
+				angular.forEach($scope.categories,function(option){
+					if (option.name[0]=='C' && option.checked==true){					
+						category.push(option.name);							
 					}
-				});			
+				});				
 			}
-			//console.log(category);
+			
 			if (category.length<1){
 				$("#dialog").html("<p>No data selected.</p>");
 				var theDialog = $("#dialog").dialog(opt);					
@@ -99,30 +129,15 @@
 				data : {modality:modal,category_full:category}
 			}).success(function (data) {
 				console.log(data);
-				/*var one_protocol=[];				
-				var len=$scope.series.length;
-				for (var i=0;i<len;i++){				
-					var tmp={};				
-					angular.extend(tmp, $scope.protocols[0],$scope.series[i], true);
-					delete tmp['id'];
-					delete tmp['show'];
-					one_protocol.push(tmp);
-				}*/								
-				
-				if (modal=="MR"){
-					for (var i=0;i<category.length;i++){
-						$scope.export_mr_options[category[i]]=false;
-					}								
-				}else{
-					for (var i=0;i<category.length;i++){
-						$scope.export_ct_options[category[i]]=false;
-					}	
-				}
+									
+				angular.forEach($scope.categories,function(option){
+					option.checked=false;
+				});					
 			
 				if (angular.isObject(data)){										
 					$scope.export_protocols=data.slice(0);						
 					for (var i=0;i<$scope.export_protocols.length;i++){
-						delete $scope.export_protocols[i]['id'];
+						delete $scope.export_protocols[i]['id'];					
 					}
 					alasql('SELECT * INTO CSV("export_protocols.csv",{headers:true}) FROM ?',[$scope.export_protocols]);
 					
@@ -138,13 +153,73 @@
 		};
 		this.tab='Home';
 		this.selectprotocols=function(category_data){
-			//console.log(bodypart);
 			this.select('Protocols');
-			//this.tab='Protocols';			
+			$scope.header="";
 			$http({
 				url: 'ajax/get_protocol',
 				method: "POST",
 				data : {category:category_data}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.protocols=data.slice(0);
+				}
+				else{
+					//console.log(data);
+					$scope.protocols=[];
+				}
+				//console.log($scope.protocols[0]);
+				//$scope.users = data;
+			}).error(function (data) {
+				console.log(data);				
+			});
+		};
+		this.selectscanners=function(scanner_data){
+			this.select('Protocols');
+			$scope.header='CT-J0_64 slice ';
+			$http({
+				url: 'ajax/get_protocol_scanner',
+				method: "POST",
+				data : {scanner:scanner_data}
+			}).success(function (data) {
+				//console.log(data);
+				if (angular.isObject(data)){					
+					$scope.protocols=data.slice(0);
+				}
+				else{
+					//console.log(data);
+					$scope.protocols=[];
+				}
+				//console.log($scope.protocols[0]);
+				//$scope.users = data;
+			}).error(function (data) {
+				console.log(data);				
+			});
+
+		};
+		$scope.notify=function(status_data, p_id, p_name, s_id){
+			console.log("wll");
+			$http({
+				url: 'ajax/notify',
+				method: "POST",
+				data : {state:status_data, protocol_ID:p_id, protocol_name:p_name, series_ID:s_id}
+			}).success(function (data) {
+				console.log("yes");
+				console.log(data);
+			}).error(function (data) {
+				console.log(data);				
+			});	
+		
+		};
+		this.goBack=function(){			
+			this.selectprotocols($scope.detail_protocol_category);
+		};
+		this.selectAllProtocols=function(){			
+			this.select('Protocols');		
+			$http({
+				url: 'ajax/get_all_protocols',
+				method: "POST",
+				data : {}
 			}).success(function (data) {
 				//console.log(data);
 				if (angular.isObject(data)){					
@@ -226,7 +301,7 @@
 			this.tab='DetailedProtocol';	
 			$scope.detail_protocol=protocol_number;
 			$scope.detail_protocol_category=protocol_category;
-			$scope.all_series_button="Show All Series";
+			$scope.all_series_button="Hide All Series";
 			
 			$http({
 				url: 'detailed_ajax/get_protocol',
@@ -245,7 +320,7 @@
 				function (data) {
 				console.log(data);				
 			});				
-			
+			console.log(protocol_category);
 			$http({
 				url: 'detailed_ajax/get_series',
 				method: "POST",
@@ -256,7 +331,7 @@
 					$scope.series=data.slice(0);
 					//console.log($scope.series);
 					for (i = 0; i < $scope.series.length; i++) { 
-						$scope.series[i].show=false;
+						$scope.series[i].show=true;
 					}
 					//console.log($scope.series);
 				}
@@ -334,6 +409,34 @@
 				this.showHistory();
 			}
 		};	
+		this.deleteAllProtocol=function(){			
+			var contro=$(this);			
+			bootbox.prompt("Password:", function(result) {                
+				if (result === null) {                                             
+					$('#result').html("Prompt dismissed!");                              
+				} else {
+					$http({
+						url: 'detailed_ajax/delete_all',
+						method: "POST",
+						data : {password:result}
+					}).success(function (data) {
+					console.log(data);
+						if (data==="1"){
+							//contro[0].selectprotocols($scope.detail_protocol_category);
+							contro[0].construct_categories();
+							if (contro[0].tab==="Protocols"){
+								contro[0].select('Home');	
+							}
+							//$('#result').html("Delete success!"); 
+						}else{
+							$('#result').html("Wrong password!");
+						}			
+					}).error(function (data) {
+						console.log(data);				
+					});				        
+				}
+			});			
+		};
 		this.deleteprotocol=function(){			
 			var contro=$(this);			
 			bootbox.prompt("Password:", function(result) {                
@@ -348,7 +451,8 @@
 					}).success(function (data) {
 					console.log(data);
 						if (data==="1"){
-							contro[0].selectprotocols($scope.detail_protocol_category);
+							contro[0].construct_categories();
+							contro[0].selectprotocols($scope.detail_protocol_category);							
 							//$('#result').html("Delete success!"); 
 						}else{
 							$('#result').html("Wrong password!");
@@ -358,11 +462,8 @@
 					});				        
 				}
 			});			
-		}
+		};
 	}]);		
-	
-	
-	
 	
 	var base_url="radiology";
 	

@@ -28,7 +28,7 @@ class Detailed_ajax extends CI_Controller {
 		
 		$protocol_number = mysql_real_escape_string($data->number);			
 		$category=mysql_real_escape_string($data->category);	
-		if ($category[0]=='M' && $category[0]=='R'){
+		if ($category[0]=='M'){
 			$this->load->model('series_mr_model');				
 			$result= $this->series_mr_model->get_list_by_number($protocol_number);	
 		}else{
@@ -44,19 +44,34 @@ class Detailed_ajax extends CI_Controller {
 		$user_name=$this->session->userdata('user_name');
 		$protocol_number = mysql_real_escape_string($data->number);					
 		$password = mysql_real_escape_string($data->password);	
-		$modality=mysql_real_escape_string($data->modality);	
+		$category=mysql_real_escape_string($data->category);	
 		if ($password=="cornellradiology"){
 			$this->load->model('protocol_model');				
 			$this->protocol_model->delete_by_number($protocol_number,$user_name);							
-			if ($modality=="MR"){
+			if ($category[0]=='M'){
 				$this->load->model('series_mr_model');				
 				$this->series_mr_model->delete_by_number($protocol_number);	
 			}else{
 				$this->load->model('series_ct_model');				
 				$this->series_ct_model->delete_by_number($protocol_number);	
-			}
-									
+			}											
+			echo 1;
+		}else{
+			echo 0;
+		}		
+	}
+	function delete_all(){
+		$data = json_decode(file_get_contents("php://input"));
 		
+		$user_name=$this->session->userdata('user_name');					
+		$password = mysql_real_escape_string($data->password);			
+		if ($password=="cornellradiology"){
+			$this->load->model('protocol_model');				
+			$this->protocol_model->delete_all($user_name);										
+			$this->load->model('series_mr_model');				
+			$this->series_mr_model->delete_all();	
+			$this->load->model('series_ct_model');				
+			$this->series_ct_model->delete_all();															
 			echo 1;
 		}else{
 			echo 0;

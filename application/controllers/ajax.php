@@ -63,6 +63,22 @@ class Ajax extends CI_Controller {
 		echo json_encode($result);			
 	}
 	*/
+	function notify(){
+		$data = json_decode(file_get_contents("php://input"));	
+		$state = mysql_real_escape_string($data->state);
+		$protocol_ID = mysql_real_escape_string($data->protocol_ID);
+		$protocol_name = mysql_real_escape_string($data->protocol_name);
+		$series_ID = mysql_real_escape_string($data->series_ID);
+		$user = $this->session->userdata('user_name');
+		$timestamp = time(); 
+		exec("python /var/www/html/wanglilin/radiology/radiqal_pronto_test.py $state $protocol_ID $protocol_name $series_ID $user $timestamp");	
+		echo 1;	
+	}
+	function get_category(){
+		$this->load->model('category_model');				
+		$result= $this->category_model->get_all_list();
+		echo json_encode($result);
+	}
 	function get_record(){
 		$data = json_decode(file_get_contents("php://input"));
 		
@@ -89,6 +105,21 @@ class Ajax extends CI_Controller {
 		$result= $this->protocol_model->get_list_by_category($category);		
 		
 			
+		echo json_encode($result);				
+	}
+	function get_protocol_scanner(){
+		$data = json_decode(file_get_contents("php://input"));
+		
+		$scanner = mysql_real_escape_string($data->scanner);
+		$this->load->model('protocol_series_model');				
+		$result= $this->protocol_series_model->get_list_by_scanner($scanner);		
+			
+		echo json_encode($result);				
+	}
+	function get_all_protocols(){	
+		$this->load->model('protocol_model');				
+		$result= $this->protocol_model->get_all_protocols();		
+		
 		echo json_encode($result);				
 	}
 	function export_protocol(){
@@ -128,73 +159,86 @@ class Ajax extends CI_Controller {
         $file_path = $dest;
 		
 		$this->load->model('protocol_model');
+		//$this->load->model('category_model');
 		
         if ($this->csvimport->get_array($file_path)) {
 			$csv_array = $this->csvimport->get_array($file_path);
-			$imported_protocols=array(array(),array(),array());
+			$imported_protocols=array(array(),array(),array(),array());
 			//$imported_status=array();
 			foreach ($csv_array as $row) {	
-				$protocol_data = array(
-                        'protocol_name'=>$row['Protocol Name'],
-                        'protocol_number'=>$row['Protocol ID'],
-						'protocol_category'=>$row['Protocol Category'],
-                        'indication'=>$row['Indications'],
-						'report'=>$row['Report Template']
+				$protocol_data = array(                        
+                        "Protocol ID"=>$row['Protocol ID'],
+						"Protocol Name"=>$row['Protocol Name'],
+						'Protocol Category'=>$row['Protocol Category'],                        
+						'Report Template'=>$row['Report Template'],
+						'Indications'=>$row['Indications']
                 );					
 				if ($row['Protocol ID']==NULL) break;	
 				
 				$protocol_status=$this->protocol_model->insert_new($protocol_data,$row['Protocol ID'],$user_name);
+				//$this->category_model->insert_new($row['Protocol Category']);
 				array_push($imported_protocols[0], $row['Protocol ID']);   
 				array_push($imported_protocols[1], $row['Protocol Name']);				
 				
 				$series_status;
-				if (strtoupper($protocol_data['protocol_category'][0])==='M'){
+				if (strtoupper($protocol_data['Protocol Category'][0])==='M'){
 					$series_data = array(
-                        'series_name'=>$row['Series'],                        
-                        'pulse_sequence'=>$row['Pulse Sequence'],
-                        'plane'=>$row['Plane'],
-                        'imaging_mode'=>$row['Imaging Mode'],
-						'sequence_description'=>$row['Sequence Description'],
-						'fov'=>$row['FOV'],
-                        'matrix_15t'=>$row['MATRIX (1.5T)'],
-                        'matrix_3t'=>$row['MATRIX (3T)'],
-                        'thk_space'=>$row['THK/SPACE'],
-						'time'=>$row['Time'],                        
-						'protocol_number'=>$row['Protocol ID']
+                        'Series'=>$row['Series'],                        
+                        'Pulse Sequence'=>$row['Pulse Sequence'],
+                        'Plane'=>$row['Plane'],
+                        'Imaging Mode'=>$row['Imaging Mode'],
+						'Sequence Description'=>$row['Sequence Description'],
+						'Localization'=>$row['Localization'],
+						'FOV'=>$row['FOV'],
+                        'MATRIX (1.5T)'=>$row['MATRIX (1.5T)'],
+                        'MATRIX (3T)'=>$row['MATRIX (3T)'],
+						'NEX'=>$row['NEX'],
+						'Bandwidth'=>$row['Bandwidth'],
+                        'THK/SPACE'=>$row['THK/SPACE'],
+						'Sequence options'=>$row['Sequence options'],
+						'Injection options'=>$row['Injection options'],
+						'Time'=>$row['Time'],                        
+						'Protocol ID'=>$row['Protocol ID'],
+						'Scanner'=>$row['Scanner'],
+						'Notes'=>$row['Notes']
                     );
-                    $series_status=$this->series_mr_model->insert_new($series_data,$row['Series']);
+                    $series_status=$this->series_mr_model->insert_new($series_data,$row['Series'],$row['Protocol ID']);
+		    array_push($imported_protocols[3], $row['Series']);				
 				}else{
 					$series_data = array(
-						'series_name'=>$row['Series'],                        
-                        'patient_orientation'=>$row['Orientation'],                        
-                        'intravenous_contrast'=>$row['Intravenous Contrast'],
-						'oral_contrast'=>$row['Oral Contrast'],
-						'scout'=>$row['Scout (Series 1)'],
-                        'scanning_mode'=>$row['Scanning Mode'],
-                        'range_direction'=>$row['Range/Direction'],
-                        'gantry_angle'=>$row['Gantry Angle'],
-						'algorithm'=>$row['Algorithm'],
-                        'beam_collimation_detector_configuration'=>$row['Beam Collimation / Detector Configuration'],
-                        'slice_thickness'=>$row['Slice Thickness'],
-                        'interval'=>$row['Interval'],
-						'table_speed'=>$row['Table Speed (mm/rotation)'],
-                        'pitch'=>$row['Pitch'],
-						'kvp'=>$row['kVp'],						
-                        'ma'=>$row['mA'],
-						'noise_index'=>$row['Noise Index'],
-						'noise_reduction'=>$row['Noise Reduction'],
-                        'rotation_time'=>$row['Rotation Time'],
-                        'scan_fov'=>$row['Scan FOV'],
-						'display_fov'=>$row['Display FOV'],
-						'scan_delay'=>$row['Scan Delay'],						 
-                        'post_processing'=>$row['Post Processing'],
-						'transfer_images'=>$row['Transfer Images'],
-                        'notes'=>$row['Notes'],
-						'ctdi'=>$row['CTDI'],
-						'protocol_number'=>$row['Protocol ID']
+						'Series'=>$row['Series'],
+			                        'Orientation'=>$row['Orientation'],                        
+                        'Intravenous Contrast'=>$row['Intravenous Contrast'],
+						'Oral Contrast'=>$row['Oral Contrast'],
+						'Scout'=>$row['Scout'],
+                        'Scanning Mode'=>$row['Scanning Mode'],
+                        'Range/Direction'=>$row['Range/Direction'],
+                        'Gantry Angle'=>$row['Gantry Angle'],
+						'Algorithm'=>$row['Algorithm'],
+                        'Beam Collimation / Detector Configuration'=>$row['Beam Collimation / Detector Configuration'],
+                        'Slice Thickness'=>$row['Slice Thickness'],
+                        'Interval'=>$row['Interval'],
+						'Table Speed (mm/rotation)'=>$row['Table Speed (mm/rotation)'],
+                        'Pitch'=>$row['Pitch'],
+						'kVp'=>$row['kVp'],						
+                        'mA'=>$row['mA'],
+						'Noise Index'=>$row['Noise Index'],
+						'Noise Reduction'=>$row['Noise Reduction'],
+                        'Rotation Time'=>$row['Rotation Time'],
+                        'Scan FOV'=>$row['Scan FOV'],
+						'Display FOV'=>$row['Display FOV'],
+						'Scan Delay'=>$row['Scan Delay'],						 
+                        'Post Processing'=>$row['Post Processing'],
+						'Transfer Images'=>$row['Transfer Images'],
+                        'Notes'=>$row['Notes'],
+						'CTDI'=>$row['CTDI'],
+						'Protocol ID'=>$row['Protocol ID'],
+						'Scanner'=>$row['Scanner']                        
+ 
                     );
-                    $series_status=$this->series_ct_model->insert_new($series_data,$row['Series']);
-					
+                    $series_status=$this->series_ct_model->insert_new($series_data,$row['Series'],$row['Protocol ID']);
+        	    array_push($imported_protocols[3], $row['Series']);				
+			
 				}	
 				//0: new protocol; 1: modified; 2:no change
 				$status=1;
